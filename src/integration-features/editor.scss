@@ -1,0 +1,247 @@
+/**
+ * Integration Feature Block - Editor-Only Styles
+ *
+ * Styles applied only in the WordPress block editor.
+ */
+
+// ============================================
+// Editor-Specific Block Wrapper
+// ============================================
+
+.wp-block-popup-maker-integration-feature {
+	// Ensure block is visible and properly spaced in editor
+	margin-bottom: 1.5rem;
+
+	// Selected state styling
+	&.is-selected {
+		.pm-integration-feature {
+			box-shadow: 0 0 0 2px #0073aa;
+			border-color: #0073aa;
+		}
+	}
+
+	// Hovered state (when not selected)
+	&:not(.is-selected):hover {
+		.pm-integration-feature {
+			border-color: #0073aa;
+		}
+	}
+}
+
+// ============================================
+// Editor RichText Placeholder
+// ============================================
+
+.pm-integration-feature__label {
+	// RichText placeholder styling
+	.block-editor-rich-text__editable[data-is-placeholder-visible='true']::before {
+		color: #9ca3af;
+		opacity: 0.8;
+	}
+
+	// Empty state styling
+	&:empty::before {
+		content: attr(placeholder);
+		color: #9ca3af;
+		opacity: 0.8;
+	}
+}
+
+// ============================================
+// InnerBlocks Area
+// ============================================
+
+.pm-integration-feature__description {
+	// InnerBlocks appender (add block button)
+	.block-list-appender {
+		margin-top: 1rem;
+		margin-bottom: 0;
+	}
+
+	// Empty state placeholder
+	&:empty {
+		position: relative;
+		min-height: 3rem;
+
+		&::before {
+			content: 'Add description content...';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: #9ca3af;
+			font-size: 0.9375rem;
+			pointer-events: none;
+		}
+	}
+
+	// Nested block styling
+	.block-editor-block-list__layout {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	// Inner block selected state
+	.wp-block {
+		margin-top: 0.75rem;
+		margin-bottom: 0.75rem;
+
+		&:first-child {
+			margin-top: 0;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+// ============================================
+// Block Toolbar & Controls
+// ============================================
+
+// Ensure toolbar controls are properly styled
+.block-editor-block-toolbar {
+	.pm-integration-feature & {
+		// Custom toolbar button styling if needed
+	}
+}
+
+// ============================================
+// Details Element Editor Behavior
+// ============================================
+
+.pm-integration-feature.has-description {
+	// In editor, always show description panel for editing
+	details {
+		summary {
+			// Prevent summary from being clickable in editor
+			pointer-events: none;
+
+			// Re-enable pointer events for child elements
+			> * {
+				pointer-events: auto;
+			}
+		}
+
+		// Always keep details open in editor for easier editing
+		&:not([open]) {
+			.pm-integration-feature__description {
+				display: block;
+			}
+		}
+	}
+}
+
+// ============================================
+// Inspector Panel Styling
+// ============================================
+
+// Tier selector in sidebar
+.components-panel__body {
+	.pm-tier-selector {
+		margin-bottom: 1rem;
+
+		.components-base-control__label {
+			margin-bottom: 0.5rem;
+			font-weight: 500;
+		}
+	}
+}
+
+// ============================================
+// Block Variations Picker
+// ============================================
+
+.block-editor-block-variation-picker {
+	.pm-integration-feature-variation {
+		// Custom variation preview styling
+		padding: 1rem;
+
+		.pm-tier-badge {
+			margin-bottom: 0.5rem;
+		}
+	}
+}
+
+// ============================================
+// Drag & Drop States
+// ============================================
+
+.pm-integration-feature {
+	// When block is being dragged
+	&.is-dragging {
+		opacity: 0.5;
+	}
+
+	// When hovering during drag operation
+	&.is-dragging-over {
+		border-color: #0073aa;
+		background-color: rgba(0, 115, 170, 0.05);
+	}
+}
+
+// ============================================
+// Multi-Select State
+// ============================================
+
+.is-multi-selected {
+	.pm-integration-feature {
+		box-shadow: 0 0 0 1px #0073aa;
+	}
+}
+
+// ============================================
+// Editor Dark Mode Support
+// ============================================
+
+.is-dark-theme {
+	.pm-integration-feature {
+		background-color: #1e1e1e;
+		border-color: #3a3a3a;
+		color: #e0e0e0;
+
+		.pm-integration-feature__label {
+			color: #e0e0e0;
+		}
+
+		.pm-integration-feature__description {
+			border-top-color: #3a3a3a;
+
+			p,
+			ul,
+			ol {
+				color: #b0b0b0;
+			}
+
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				color: #e0e0e0;
+			}
+		}
+	}
+}
+
+// ============================================
+// Responsive Editor Layout
+// ============================================
+
+@media (max-width: 782px) {
+	.pm-integration-feature__header {
+		padding: 0.75rem;
+		gap: 0.5rem;
+	}
+
+	.pm-tier-badge {
+		font-size: 0.6875rem;
+		padding: 0.25rem 0.5rem;
+	}
+
+	.pm-integration-feature__description {
+		padding: 0 0.75rem 0.75rem 0.75rem;
+	}
+}

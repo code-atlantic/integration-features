@@ -1,0 +1,249 @@
+/**
+ * Integration Feature Block - Frontend & Editor Styles
+ *
+ * Styles applied both in the editor and on the frontend.
+ * Uses BEM methodology for consistent naming.
+ */
+
+// ============================================
+// Block Root
+// ============================================
+
+.pm-integration-feature {
+	margin-bottom: 1rem;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	background-color: #ffffff;
+	transition: box-shadow 0.2s ease;
+
+	&:hover {
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	// Accordion variant (has description content)
+	&.has-description {
+		details {
+			border: none;
+			margin: 0;
+		}
+
+		summary {
+			cursor: pointer;
+			list-style: none; // Remove default marker
+
+			// Remove default marker in WebKit browsers
+			&::-webkit-details-marker {
+				display: none;
+			}
+		}
+	}
+}
+
+// ============================================
+// Header Section
+// ============================================
+
+.pm-integration-feature__header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 1rem;
+	min-height: 3.5rem;
+
+	// When inside summary (accordion), ensure proper cursor
+	summary & {
+		cursor: pointer;
+	}
+}
+
+// ============================================
+// Tier Badge
+// ============================================
+
+.pm-tier-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.25rem 0.75rem;
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	border-radius: 3px;
+	flex-shrink: 0;
+	line-height: 1.2;
+
+	// FREE tier - Neutral gray
+	&--free {
+		background-color: #6c757d;
+		color: #ffffff;
+	}
+
+	// PRO tier - Primary blue
+	&--pro {
+		background-color: #0073aa;
+		color: #ffffff;
+	}
+
+	// PRO+ tier - Premium purple
+	&--proplus {
+		background-color: #7c3aed;
+		color: #ffffff;
+		position: relative;
+
+		// Add sparkle effect for premium tier
+		&::before {
+			content: '✨';
+			margin-right: 0.25rem;
+			font-size: 0.875rem;
+		}
+	}
+}
+
+// ============================================
+// Feature Label
+// ============================================
+
+.pm-integration-feature__label {
+	flex: 1;
+	font-size: 1rem;
+	font-weight: 500;
+	color: #1e1e1e;
+	line-height: 1.4;
+
+	// Ensure label doesn't break layout
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
+// ============================================
+// Accordion Icon
+// ============================================
+
+.pm-integration-feature__icon {
+	flex-shrink: 0;
+	font-size: 0.875rem;
+	color: #6c757d;
+	transition: transform 0.2s ease;
+	width: 1rem;
+	text-align: center;
+
+	// Rotate when details element is open
+	details[open] & {
+		transform: rotate(180deg);
+	}
+
+	// Respect reduced motion preferences
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+// ============================================
+// Description Panel
+// ============================================
+
+.pm-integration-feature__description {
+	padding: 0 1rem 1rem 1rem;
+	border-top: 1px solid #e0e0e0;
+	margin-top: 0;
+
+	// Style inner blocks
+	> * {
+		margin-top: 0.75rem;
+		margin-bottom: 0.75rem;
+
+		&:first-child {
+			margin-top: 0;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// Paragraph styles
+	p {
+		color: #4a5568;
+		line-height: 1.6;
+		font-size: 0.9375rem;
+	}
+
+	// List styles
+	ul,
+	ol {
+		padding-left: 1.5rem;
+		color: #4a5568;
+		font-size: 0.9375rem;
+	}
+
+	// Heading styles
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: #2d3748;
+		margin-top: 1rem;
+		margin-bottom: 0.5rem;
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+// Focus styles for keyboard navigation
+.pm-integration-feature {
+	summary:focus {
+		outline: 2px solid #0073aa;
+		outline-offset: 2px;
+	}
+
+	// High contrast mode support
+	@media (prefers-contrast: high) {
+		border-width: 2px;
+
+		.pm-tier-badge {
+			border: 1px solid currentColor;
+		}
+	}
+
+	// Reduced motion support
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			transition: none !important;
+			animation: none !important;
+		}
+	}
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	.pm-integration-feature {
+		border: 1px solid #000;
+		box-shadow: none;
+		page-break-inside: avoid;
+
+		// Always show description when printing
+		&.has-description {
+			details {
+				summary {
+					display: flex;
+				}
+
+				.pm-integration-feature__description {
+					display: block !important;
+				}
+			}
+		}
+
+		.pm-integration-feature__icon {
+			display: none;
+		}
+	}
+}

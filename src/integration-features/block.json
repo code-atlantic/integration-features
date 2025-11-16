@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "popup-maker/integration-feature",
+	"version": "1.0.0",
+	"title": "Integration Feature",
+	"category": "widgets",
+	"icon": "admin-plugins",
+	"description": "Display integration features with tier badges and optional accordion descriptions.",
+	"keywords": [
+		"integration",
+		"feature",
+		"tier",
+		"accordion"
+	],
+	"textdomain": "popup-maker",
+	"attributes": {
+		"tier": {
+			"type": "string",
+			"enum": ["free", "pro", "proplus"],
+			"default": "free"
+		},
+		"label": {
+			"type": "string",
+			"source": "html",
+			"selector": ".pm-integration-feature__label",
+			"default": ""
+		},
+		"isOpen": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": false,
+		"className": true,
+		"customClassName": true,
+		"spacing": {
+			"margin": true,
+			"padding": false
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
