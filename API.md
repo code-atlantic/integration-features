@@ -145,22 +145,22 @@ The block uses CSS custom properties for theme integration:
 
 ### `--action`
 - **Used for**: PRO tier badge background
-- **Fallback**: `#0073aa` (blue)
+- **Fallback**: `#1dbe61` (brand green)
 - **Example**:
   ```css
   .pm-tier-badge--pro {
-    background-color: var(--action, #0073aa);
+    background-color: var(--action, #1dbe61);
     color: #ffffff;
   }
   ```
 
 ### `--secondary`
 - **Used for**: PRO+ tier badge background
-- **Fallback**: `#7c3aed` (purple)
+- **Fallback**: `#8267F6` (brand purple)
 - **Example**:
   ```css
   .pm-tier-badge--proplus {
-    background-color: var(--secondary, #7c3aed);
+    background-color: var(--secondary, #8267F6);
     color: #ffffff;
   }
   ```
@@ -169,8 +169,8 @@ The block uses CSS custom properties for theme integration:
 Add these CSS variables to your theme:
 ```css
 :root {
-  --action: #0073aa;    /* Your brand primary color */
-  --secondary: #7c3aed; /* Your brand secondary color */
+  --action: #1dbe61;    /* PRO tier - Brand primary green */
+  --secondary: #8267F6; /* PRO+ tier - Brand secondary purple */
 }
 ```
 

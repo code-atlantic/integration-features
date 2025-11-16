@@ -81,13 +81,13 @@
 
 	// PRO tier - Uses CSS variable --action
 	&--pro {
-		background-color: var(--action, #0073aa); // Fallback to blue
+		background-color: var(--action, #1dbe61); // Fallback to brand green
 		color: #ffffff;
 	}
 
 	// PRO+ tier - Uses CSS variable --secondary
 	&--proplus {
-		background-color: var(--secondary, #7c3aed); // Fallback to purple
+		background-color: var(--secondary, #8267F6); // Fallback to brand purple
 		color: #ffffff;
 		position: relative;
 
