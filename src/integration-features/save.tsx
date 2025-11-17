@@ -67,13 +67,18 @@ export default function Save({ attributes }: SaveProps) {
 
 	/**
 	 * Block wrapper props
+	 *
+	 * NOTE: We manually construct className to avoid wp-block-{namespace}-{name} auto-addition
+	 * This maintains backward compatibility with blocks saved before this pattern.
 	 */
 	const blockProps = useBlockProps.save({
-		className: `pm-integration-feature ${hasDescription ? 'has-description' : ''}`,
 		style: {
 			fontSize: fontSize || '1.6rem',
 		},
 	});
+
+	// Override className to match legacy format (no wp-block-popup-maker-integration-feature)
+	const className = `pm-integration-feature ${hasDescription ? 'has-description' : ''}`;
 
 	/**
 	 * Conditional rendering: <details> with description, <div> without
@@ -83,6 +88,7 @@ export default function Save({ attributes }: SaveProps) {
 		return (
 			<details
 				{...blockProps}
+				className={className}
 				data-wp-interactive="popup-maker/integration-feature"
 				data-wp-context={JSON.stringify({ isOpen: false, iconStyle })}
 			>
@@ -122,7 +128,7 @@ export default function Save({ attributes }: SaveProps) {
 
 	// Render plain <div> without accordion behavior
 	return (
-		<div {...blockProps}>
+		<div {...blockProps} className={className}>
 			<div className="pm-integration-feature__header">
 				{/* Tier Badge - conditionally hidden for FREE tier */}
 				{(tier !== 'free' || showFreeBadge) && (
