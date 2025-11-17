@@ -33,7 +33,7 @@ const TIER_CONFIG: Record<TierType, TierConfig> = {
  * to ensure deterministic save output matches content state.
  */
 export default function Save({ attributes }: SaveProps) {
-	const { tier, label, iconStyle, showFreeBadge } = attributes;
+	const { tier, label, iconStyle, showFreeBadge, fontSize } = attributes;
 
 	/**
 	 * InnerBlocks props for description content
@@ -45,6 +45,10 @@ export default function Save({ attributes }: SaveProps) {
 	/**
 	 * Compute hasDescription from actual InnerBlocks children
 	 * This ensures save output matches current content state
+	 *
+	 * IMPORTANT: Keep this simple - just check if children exist
+	 * Don't try to detect "empty" content as that causes validation mismatches
+	 * with existing saved blocks
 	 */
 	const hasDescription =
 		innerBlocksProps.children &&
@@ -66,16 +70,26 @@ export default function Save({ attributes }: SaveProps) {
 	 */
 	const blockProps = useBlockProps.save({
 		className: `pm-integration-feature ${hasDescription ? 'has-description' : ''}`,
+		style: {
+			fontSize: fontSize || '1.6rem',
+		},
 	});
 
 	/**
 	 * Conditional rendering: <details> with description, <div> without
 	 */
 	if (hasDescription) {
-		// Render native <details><summary> accordion
+		// Render native <details><summary> accordion with Interactivity API
 		return (
-			<details {...blockProps}>
-				<summary className="pm-integration-feature__header">
+			<details
+				{...blockProps}
+				data-wp-interactive="popup-maker/integration-feature"
+				data-wp-context={JSON.stringify({ isOpen: false, iconStyle })}
+			>
+				<summary
+					className="pm-integration-feature__header"
+					data-wp-on--click="actions.toggle"
+				>
 					{/* Tier Badge - conditionally hidden for FREE tier */}
 					{(tier !== 'free' || showFreeBadge) && (
 						<span className={`pm-tier-badge ${currentTier.className}`}>
@@ -90,8 +104,12 @@ export default function Save({ attributes }: SaveProps) {
 						value={label}
 					/>
 
-					{/* Accordion Icon */}
-					<span className="pm-integration-feature__icon" aria-hidden="true">
+					{/* Accordion Icon - dynamically updated by Interactivity API */}
+					<span
+						className="pm-integration-feature__icon"
+						aria-hidden="true"
+						data-wp-text="callbacks.getIcon"
+					>
 						{icon}
 					</span>
 				</summary>

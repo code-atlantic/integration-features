@@ -21,6 +21,7 @@ export interface IntegrationFeatureAttributes {
 	isOpen: boolean;
 	iconStyle: IconStyleType;
 	showFreeBadge: boolean;
+	fontSize: string;
 }
 
 /**
@@ -39,6 +40,7 @@ export interface EditProps {
 	attributes: IntegrationFeatureAttributes;
 	setAttributes: (attributes: Partial<IntegrationFeatureAttributes>) => void;
 	clientId: string;
+	isSelected: boolean;
 }
 
 /**
