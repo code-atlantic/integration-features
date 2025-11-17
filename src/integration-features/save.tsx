@@ -3,6 +3,36 @@ import React from 'react';
 import type { SaveProps, TierConfig, TierType } from './types';
 
 /**
+ * Helper function to check if React child content is empty
+ * Used to filter out empty paragraphs and list items
+ */
+const isEmptyContent = (children: React.ReactNode): boolean => {
+	if (!children) return true;
+
+	// Handle arrays of children
+	if (Array.isArray(children)) {
+		return children.every(child => isEmptyContent(child));
+	}
+
+	// Handle React elements
+	if (React.isValidElement(children)) {
+		// Recursively check children of the element
+		if (children.props.children) {
+			return isEmptyContent(children.props.children);
+		}
+		return true;
+	}
+
+	// Handle strings/text nodes
+	if (typeof children === 'string') {
+		return children.trim().length === 0;
+	}
+
+	// Default to not empty for other types
+	return false;
+};
+
+/**
  * Tier badge configuration (matches edit.tsx)
  */
 const TIER_CONFIG: Record<TierType, TierConfig> = {
@@ -40,6 +70,9 @@ export default function Save({ attributes }: SaveProps) {
 	 */
 	const innerBlocksProps = useInnerBlocksProps.save({
 		className: 'pm-integration-feature__description',
+		style: {
+			fontSize: '1.6rem',
+		},
 	});
 
 	/**
@@ -73,7 +106,7 @@ export default function Save({ attributes }: SaveProps) {
 	 */
 	const blockProps = useBlockProps.save({
 		style: {
-			fontSize: fontSize || '1.6rem',
+			fontSize: fontSize || '1.8rem',
 		},
 	});
 
@@ -91,11 +124,9 @@ export default function Save({ attributes }: SaveProps) {
 				className={className}
 				data-wp-interactive="popup-maker/integration-feature"
 				data-wp-context={JSON.stringify({ isOpen: false, iconStyle })}
+				data-wp-init="callbacks.init"
 			>
-				<summary
-					className="pm-integration-feature__header"
-					data-wp-on--click="actions.toggle"
-				>
+				<summary className="pm-integration-feature__header">
 					{/* Tier Badge - conditionally hidden for FREE tier */}
 					{(tier !== 'free' || showFreeBadge) && (
 						<span className={`pm-tier-badge ${currentTier.className}`}>
@@ -114,14 +145,23 @@ export default function Save({ attributes }: SaveProps) {
 					<span
 						className="pm-integration-feature__icon"
 						aria-hidden="true"
-						data-wp-text="callbacks.getIcon"
+						data-wp-text="state.currentIcon"
 					>
 						{icon}
 					</span>
 				</summary>
 
-				{/* Description Panel */}
-				<div {...innerBlocksProps} />
+				{/* Description Panel - Filter empty child blocks */}
+				<div
+					{...innerBlocksProps}
+					children={
+						Array.isArray(innerBlocksProps.children)
+							? innerBlocksProps.children.filter(
+									(child) => !isEmptyContent(child)
+							  )
+							: innerBlocksProps.children
+					}
+				/>
 			</details>
 		);
 	}

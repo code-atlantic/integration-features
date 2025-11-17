@@ -24,6 +24,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function create_block_integration_features_block_init() {
-	register_block_type( __DIR__ . '/build/integration-features' );
+	// Register the view script module manually to ensure proper dependencies
+	wp_register_script_module(
+		'popup-maker/integration-feature-view',
+		plugin_dir_url( __FILE__ ) . 'build/integration-features/view.js',
+		[ '@wordpress/interactivity' ],
+		filemtime( __DIR__ . '/build/integration-features/view.js' )
+	);
+
+	// Register the block type
+	register_block_type( __DIR__ . '/build/integration-features', [
+		'view_script_module' => 'popup-maker/integration-feature-view',
+	] );
 }
 add_action( 'init', 'create_block_integration_features_block_init' );

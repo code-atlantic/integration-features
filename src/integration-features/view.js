@@ -10,41 +10,41 @@ import { store, getContext, getElement } from '@wordpress/interactivity';
  */
 store('popup-maker/integration-feature', {
 	state: {
-		get isOpen() {
-			const context = getContext();
-			return context.isOpen ?? false;
-		},
 		get currentIcon() {
 			const context = getContext();
 			const { iconStyle, isOpen } = context;
 
-			if (iconStyle === 'plus-minus') {
-				return isOpen ? '−' : '+';
-			}
-			return isOpen ? '▲' : '▼';
-		},
-	},
-	actions: {
-		/**
-		 * Toggle accordion open/closed state
-		 */
-		toggle: () => {
-			const context = getContext();
-			context.isOpen = !context.isOpen;
-		},
-	},
-	callbacks: {
-		/**
-		 * Get the appropriate icon based on style and open state
-		 */
-		getIcon: () => {
-			const context = getContext();
-			const { iconStyle, isOpen } = context;
+			console.log('[Interactivity API] currentIcon getter - isOpen:', isOpen, 'iconStyle:', iconStyle);
 
 			if (iconStyle === 'plus-minus') {
 				return isOpen ? '−' : '+';
 			}
 			return isOpen ? '▲' : '▼';
+		},
+	},
+	callbacks: {
+		/**
+		 * Initialize - runs when the block is mounted
+		 * Set up native toggle event listener to sync context state
+		 */
+		init: () => {
+			const context = getContext();
+			const { ref } = getElement();
+
+			const details = ref?.closest?.('details');
+
+			if (details) {
+				console.log('[Interactivity API] init - Setting up toggle listener');
+
+				// Sync initial state
+				context.isOpen = details.open;
+
+				// Listen for native toggle events and update context
+				details.addEventListener('toggle', () => {
+					context.isOpen = details.open;
+					console.log('[Interactivity API] toggle event - updated isOpen to:', details.open);
+				});
+			}
 		},
 	},
 });

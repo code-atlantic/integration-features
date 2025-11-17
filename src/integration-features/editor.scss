@@ -47,6 +47,28 @@
 			outline-offset: 2px;
 		}
 	}
+
+	// Add description affordance (+ icon)
+	.pm-integration-feature__add-description {
+		cursor: pointer;
+		transition: all 0.2s ease;
+		padding: 0.25em 0.5em;
+		margin: -0.25em;
+		border-radius: 3px;
+		opacity: 0.6;
+
+		&:hover {
+			opacity: 1;
+			color: #0073aa;
+			background-color: rgba(0, 115, 170, 0.1);
+		}
+
+		&:focus {
+			outline: 2px solid #0073aa;
+			outline-offset: 2px;
+			opacity: 1;
+		}
+	}
 }
 
 // ============================================

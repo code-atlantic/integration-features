@@ -109,12 +109,15 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 	);
 
 	/**
-	 * Auto-collapse when block is deselected
-	 * BUT NOT when:
-	 * - Inner blocks are selected
-	 * - User is actively editing (block inserter open, typing "/" etc.)
+	 * Auto-expand when showing inner blocks
+	 * Auto-collapse when block is deselected (unless inner blocks are selected)
 	 */
 	useEffect(() => {
+		// Auto-expand when inner blocks are selected (user is editing content)
+		if (hasSelectedInnerBlock && hasDescription && !isOpen) {
+			setAttributes({ isOpen: true });
+		}
+		// Auto-collapse when block is fully deselected
 		if (!isSelected && !hasSelectedInnerBlock && !isActivelyEditing && isOpen && hasDescription) {
 			setAttributes({ isOpen: false });
 		}
@@ -133,6 +136,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 	const onChangeLabel = (newLabel: string) => {
 		setAttributes({ label: newLabel });
 	};
+
 
 	/**
 	 * Toggle accordion open state (editor only)
@@ -171,32 +175,32 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 	const blockProps = useBlockProps({
 		className: `pm-integration-feature ${hasDescription ? 'has-description' : ''} ${isOpen ? 'is-open' : ''}`,
 		style: {
-			fontSize: fontSize || '1.6rem',
+			fontSize: fontSize || '1.8rem',
 		},
 	});
 
 	/**
-	 * Predefined font sizes
+	 * Predefined font sizes (based on 1.8rem default)
 	 */
 	const fontSizes = [
 		{
 			name: __('Small', 'popup-maker'),
-			size: '1.4rem',
+			size: '1.6rem',
 			slug: 'small',
 		},
 		{
 			name: __('Normal', 'popup-maker'),
-			size: '1.6rem',
+			size: '1.8rem',
 			slug: 'normal',
 		},
 		{
 			name: __('Medium', 'popup-maker'),
-			size: '1.8rem',
+			size: '2rem',
 			slug: 'medium',
 		},
 		{
 			name: __('Large', 'popup-maker'),
-			size: '2rem',
+			size: '2.2rem',
 			slug: 'large',
 		},
 	];
@@ -207,6 +211,9 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 	const innerBlocksProps = useInnerBlocksProps(
 		{
 			className: 'pm-integration-feature__description',
+			style: {
+				fontSize: '1.6rem',
+			},
 		},
 		{
 			template: [],
@@ -229,9 +236,9 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 					<FontSizePicker
 						fontSizes={fontSizes}
 						value={fontSize}
-						onChange={(newSize) => setAttributes({ fontSize: newSize || '1.6rem' })}
+						onChange={(newSize) => setAttributes({ fontSize: newSize || '1.8rem' })}
 						withReset={true}
-						resetFallbackFontSize="1.6rem"
+						resetFallbackFontSize="1.8rem"
 					/>
 				</PanelBody>
 			</InspectorControls>
@@ -306,12 +313,25 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 						className="pm-integration-feature__label"
 						value={label}
 						onChange={onChangeLabel}
+						onSplit={() => false}
 						placeholder={__('Feature name...', 'popup-maker')}
-						allowedFormats={['core/bold', 'core/italic', 'core/code']}
+						allowedFormats={[
+							'core/bold',
+							'core/italic',
+							'core/code',
+							'core/strikethrough',
+							'core/underline',
+							'core/superscript',
+							'core/subscript',
+							'core/keyboard',
+							'core/text-color',
+							'core/link',
+						]}
 					/>
 
-					{/* Accordion Icon (only if has description) - clickable toggle */}
-					{hasDescription && (
+					{/* Accordion Icon OR Add Description Button */}
+					{hasDescription ? (
+						// Toggle icon when description exists
 						<span
 							className="pm-integration-feature__icon"
 							aria-hidden="true"
@@ -330,6 +350,27 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 						>
 							{getIcon()}
 						</span>
+					) : (
+						// "Add description" affordance when no description
+						label && isSelected && (
+							<span
+								className="pm-integration-feature__add-description"
+								onClick={() => setAttributes({ isOpen: true })}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										e.preventDefault();
+										setAttributes({ isOpen: true });
+									}
+								}}
+								role="button"
+								tabIndex={0}
+								aria-label={__('Add description', 'popup-maker')}
+								style={{ cursor: 'pointer', fontSize: '0.875em', color: '#757575' }}
+								title={__('Add description', 'popup-maker')}
+							>
+								+
+							</span>
+						)
 					)}
 				</div>
 
@@ -341,11 +382,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 						role="region"
 						aria-labelledby={`pm-feature-header-${clientId}`}
 					>
-						{!hasDescription && isSelected && (
-							<div className="pm-integration-feature__placeholder">
-								<p>{__('Add content below to create an accordion description.', 'popup-maker')}</p>
-							</div>
-						)}
+						{/* No redundant placeholder - InnerBlocks has its own placeholder */}
 						<div {...innerBlocksProps} />
 					</div>
 				)}

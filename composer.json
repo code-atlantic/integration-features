@@ -1,0 +1,59 @@
+{
+  "name": "code-atlantic/ntegration-features-block",
+  "description": "Integration Features Block",
+  "type": "wordpress-plugin",
+  "author": "Code Atlantic LLC",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://wppopupmaker.com/",
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "IntegrationFeatures\\": "classes/"
+    },
+    "classmap": [
+      "vendor-prefixed"
+    ]
+  },
+  "scripts": {
+    "install-strauss": [
+      "test -f strauss.phar || curl -o strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.22.4/strauss.phar"
+    ],
+    "clean-vendor-prefix-folder": [
+      "rm -rf vendor-prefixed/**/*"
+    ],
+    "post-install-cmd": [
+      "@clean-vendor-prefix-folder",
+      "@strauss",
+      "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+      "@clean-vendor-prefix-folder",
+      "@strauss",
+      "composer dump-autoload"
+    ],
+    "strauss": [
+      "@install-strauss",
+      "@php strauss.phar"
+    ]
+  },
+  "extra": {
+    "strauss": {
+      "target_directory": "/vendor-prefixed/",
+      "namespace_prefix": "IntegrationFeatures\\Vendor\\",
+      "classmap_prefix": "IntegrationFeatures_",
+      "constant_prefix": "INTEGRATION_FEATURES_",
+      "packages": [],
+      "exclude_from_copy": {
+        "packages": []
+      }
+    }
+  },
+  "config": {
+    "platform-check": false,
+    "optimize-autoloader": true
+  }
+}
