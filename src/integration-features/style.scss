@@ -10,8 +10,10 @@
 // ============================================
 
 .pm-integration-feature {
+	--default-spacing: 1rem;
+
 	position: relative;
-	margin: 0 0 0.5em;
+	margin: 0 0 var(--default-spacing);
 	border-radius: 10px;
 	background: transparent;
 	box-shadow: 0 4px 16px transparent;
@@ -26,29 +28,30 @@
 		border: 0; // Ensure no border on closed state
 		padding: 0;
 
-		// When accordion is open, add white background with shadow
-		&[open] {
-			margin: 0 -10px; // No vertical margin to prevent text push down
-			background: #fff;
-			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-			padding: 0; // No padding needed - summary handles it
-			min-width: calc(100% + 20px); // Expand to fill with negative margin
-
-			summary {
-				padding: 0.5em 0.5em 0; // Reduced padding to work with negative margins
-			}
-		}
-
 		summary {
 			cursor: pointer;
 			list-style: none; // Remove default marker
 			border-top-left-radius: 8px;
 			border-top-right-radius: 8px;
-			padding: 0.5em 0 0; // NO left/right padding on closed state
+			padding: var(--default-spacing)  0 0; // NO left/right padding on closed state
 
 			// Remove default marker in WebKit browsers
 			&::-webkit-details-marker {
 				display: none;
+			}
+		}
+
+		// When accordion is open, add white background with shadow
+		&[open] {
+			margin: 0 calc(-1 * var(--default-spacing) - 1px) var(--default-spacing); // No vertical margin to prevent text push down
+			background: #fff;
+			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+			padding: 0; // No padding needed - summary handles it
+			// Inverse the negative margin and add the padding to the width
+			min-width: calc(100% + (calc(var(--default-spacing) + 1px) * 2)); // Expand to fill with negative margin
+			border-radius: var(--default-spacing);
+			summary {
+				padding: var(--default-spacing) calc(var(--default-spacing) + 1px) 0; // Reduced padding to work with negative margins
 			}
 		}
 
@@ -68,7 +71,7 @@
 	// Non-accordion variant (no description)
 	&:not(.has-description) {
 		// Match closed accordion styling exactly - NO left/right padding
-		padding: 0.5em 0 0;
+		padding: var(--default-spacing) 0 0;
 	}
 }
 
