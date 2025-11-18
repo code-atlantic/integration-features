@@ -93,7 +93,7 @@
 }
 
 // ============================================
-// Tier Badge
+// Tier Badge & Checkmark
 // ============================================
 
 .pm-tier-badge {
@@ -133,6 +133,22 @@
 			margin-right: 0.25em;
 			font-size: 0.875em;
 		}
+	}
+}
+
+.pm-tier-checkmark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	font-size: 1em; // Match badge visual weight
+	color: var(--action, #1dbe61); // Use action color (green) for checkmark
+	width: 1.2em;
+	height: 1.2em;
+
+	&::before {
+		font-size: 1.5em; // Make the checkmark icon larger
+		line-height: 1;
 	}
 }
 

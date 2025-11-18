@@ -5,6 +5,13 @@ All notable changes to the Integration Features Block will be documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Free tier features now show a green checkmark (dashicons-yes) instead of no indicator when FREE badge is hidden
+- Added dashicons dependency to ensure checkmark icon displays correctly
+- Improved visual hierarchy by distinguishing free features from paid tiers
+
 ## [1.0.0] - 2025-11-16
 
 ### Added

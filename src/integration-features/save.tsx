@@ -127,8 +127,10 @@ export default function Save({ attributes }: SaveProps) {
 				data-wp-init="callbacks.init"
 			>
 				<summary className="pm-integration-feature__header">
-					{/* Tier Badge - conditionally hidden for FREE tier */}
-					{(tier !== 'free' || showFreeBadge) && (
+					{/* Tier Badge or Checkmark */}
+					{tier === 'free' && !showFreeBadge ? (
+						<span className="pm-tier-checkmark dashicons dashicons-yes" aria-label="Free feature"></span>
+					) : (
 						<span className={`pm-tier-badge ${currentTier.className}`}>
 							{currentTier.label}
 						</span>
@@ -170,8 +172,10 @@ export default function Save({ attributes }: SaveProps) {
 	return (
 		<div {...blockProps} className={className}>
 			<div className="pm-integration-feature__header">
-				{/* Tier Badge - conditionally hidden for FREE tier */}
-				{(tier !== 'free' || showFreeBadge) && (
+				{/* Tier Badge or Checkmark */}
+				{tier === 'free' && !showFreeBadge ? (
+					<span className="pm-tier-checkmark dashicons dashicons-yes" aria-label="Free feature"></span>
+				) : (
 					<span className={`pm-tier-badge ${currentTier.className}`}>
 						{currentTier.label}
 					</span>

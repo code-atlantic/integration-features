@@ -300,8 +300,10 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 			<div {...blockProps}>
 				{/* Accordion Header / Summary */}
 				<div className="pm-integration-feature__header">
-					{/* Tier Badge - conditionally hidden for FREE tier */}
-					{(tier !== 'free' || showFreeBadge) && (
+					{/* Tier Badge or Checkmark */}
+					{tier === 'free' && !showFreeBadge ? (
+						<span className="pm-tier-checkmark dashicons dashicons-yes" aria-label={__('Free feature', 'popup-maker')}></span>
+					) : (
 						<span className={`pm-tier-badge ${currentTier.className}`}>
 							{currentTier.label}
 						</span>
