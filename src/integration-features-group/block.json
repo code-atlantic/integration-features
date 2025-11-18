@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "popup-maker/integration-features-group",
+  "version": "1.0.0",
+  "title": "Integration Features Group",
+  "category": "widgets",
+  "icon": "admin-plugins",
+  "description": "Display a group of integration features with icon, heading, and accordion list.",
+  "keywords": [
+    "integration",
+    "features",
+    "group",
+    "accordion",
+    "list"
+  ],
+  "textdomain": "popup-maker",
+  "attributes": {
+    "iconAnimation": {
+      "type": "string",
+      "enum": ["rotate-45", "rotate-180"],
+      "default": "rotate-45"
+    },
+    "oneOpenPerGroup": {
+      "type": "boolean",
+      "default": true
+    },
+    "defaultOpen": {
+      "type": "boolean",
+      "default": false
+    },
+    "hasFeatures": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": ["wide", "full"],
+    "className": true,
+    "customClassName": true,
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "interactivity": true,
+    "color": {
+      "background": true,
+      "text": true,
+      "link": false
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    }
+  },
+  "providesContext": {
+    "popup-maker/iconAnimation": "iconAnimation",
+    "popup-maker/groupId": "clientId",
+    "popup-maker/oneOpenPerGroup": "oneOpenPerGroup"
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScriptModule": "file:./view.js"
+}

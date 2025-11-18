@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function create_block_integration_features_block_init() {
-	// Register the view script module manually to ensure proper dependencies
+	// Register the view script module for integration-feature block
 	wp_register_script_module(
 		'popup-maker/integration-feature-view',
 		plugin_dir_url( __FILE__ ) . 'build/integration-features/view.js',
@@ -32,9 +32,22 @@ function create_block_integration_features_block_init() {
 		filemtime( __DIR__ . '/build/integration-features/view.js' )
 	);
 
-	// Register the block type
+	// Register the integration-feature block type
 	register_block_type( __DIR__ . '/build/integration-features', [
 		'view_script_module' => 'popup-maker/integration-feature-view',
+	] );
+
+	// Register the view script module for integration-features-group block
+	wp_register_script_module(
+		'popup-maker/integration-features-group-view',
+		plugin_dir_url( __FILE__ ) . 'build/integration-features-group/view.js',
+		[ '@wordpress/interactivity' ],
+		filemtime( __DIR__ . '/build/integration-features-group/view.js' )
+	);
+
+	// Register the integration-features-group block type
+	register_block_type( __DIR__ . '/build/integration-features-group', [
+		'view_script_module' => 'popup-maker/integration-features-group-view',
 	] );
 }
 add_action( 'init', 'create_block_integration_features_block_init' );

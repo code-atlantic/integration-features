@@ -1,0 +1,58 @@
+/**
+ * Integration Features Group - Editor-Only Styles
+ */
+
+.wp-block-popup-maker-integration-features-group {
+	// Selected state
+	&.is-selected {
+		.pm-integration-features-group {
+			outline: 2px solid #0073aa;
+			outline-offset: 2px;
+		}
+	}
+
+	// Hover state (when not selected)
+	&:not(.is-selected):hover {
+		.pm-integration-features-group {
+			background-color: rgba(0, 115, 170, 0.03);
+		}
+	}
+}
+
+// InnerBlocks area styling
+.pm-integration-features-group__content {
+	.block-list-appender {
+		margin-top: 1rem;
+	}
+
+	// Nested block spacing
+	.wp-block {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+}
+
+// Placeholder styling for empty slots
+.pm-integration-features-group__icon,
+.pm-integration-features-group__heading,
+.pm-integration-features-group__subheading {
+	&:empty::before {
+		color: #9ca3af;
+		font-style: italic;
+	}
+}
+
+// Dark mode support
+.is-dark-theme {
+	.pm-integration-features-group {
+		background-color: #1e1e1e;
+
+		&__heading {
+			color: #e0e0e0;
+		}
+
+		&__subheading {
+			color: #b0b0b0;
+		}
+	}
+}

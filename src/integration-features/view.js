@@ -26,6 +26,7 @@ store('popup-maker/integration-feature', {
 		/**
 		 * Initialize - runs when the block is mounted
 		 * Set up native toggle event listener to sync context state
+		 * Also coordinate with parent group if present
 		 */
 		init: () => {
 			const context = getContext();
@@ -39,10 +40,26 @@ store('popup-maker/integration-feature', {
 				// Sync initial state
 				context.isOpen = details.open;
 
+				// Set feature ID if not already set
+				if (!details.id) {
+					details.id = `feature-${Math.random().toString(36).substr(2, 9)}`;
+				}
+				details.dataset.featureId = details.id;
+
 				// Listen for native toggle events and update context
 				details.addEventListener('toggle', () => {
 					context.isOpen = details.open;
 					console.log('[Interactivity API] toggle event - updated isOpen to:', details.open);
+
+					// Notify parent group if present
+					const parentGroup = ref.closest('[data-wp-interactive="popup-maker/integration-features-group"]');
+					if (parentGroup) {
+						const groupStore = window.wp?.interactivity?.store?.('popup-maker/integration-features-group');
+						if (groupStore && groupStore.actions) {
+							const featureId = details.dataset.featureId || details.id;
+							groupStore.actions.onFeatureToggle(featureId, details.open);
+						}
+					}
 				});
 			}
 		},

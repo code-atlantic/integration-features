@@ -71,6 +71,11 @@
 			"width": true
 		}
 	},
+	"usesContext": [
+		"popup-maker/iconAnimation",
+		"popup-maker/groupId",
+		"popup-maker/oneOpenPerGroup"
+	],
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
