@@ -14,19 +14,28 @@ jest.mock('@wordpress/block-editor', () => ({
 		save: jest.fn((props = {}) => props),
 	},
 	useInnerBlocksProps: {
-		save: jest.fn((props = {}) => ({
-			...props,
-			className: 'pm-integration-features-group__content',
-			children: [],
-		})),
+		save: jest.fn((props = {}) => props),
+	},
+	RichText: {
+		Content: ({ tagName: Tag = 'div', value, ...props }: any) => (
+			<Tag {...props}>{value}</Tag>
+		),
 	},
 }));
 
 describe('Accessibility Tests', () => {
 	const defaultAttributes: IntegrationFeaturesGroupAttributes = {
+		groupIcon: 'admin-plugins',
+		groupIconColor: '#1e1e1e',
+		groupIconBackgroundColor: '',
+		heading: '',
+		headingTag: 'h2',
+		subheading: '',
 		iconAnimation: 'rotate-45',
 		oneOpenPerGroup: true,
 		defaultOpen: false,
+		groupCollapsible: false,
+		groupCollapsed: true,
 		hasFeatures: false,
 	};
 
@@ -42,11 +51,12 @@ describe('Accessibility Tests', () => {
 			);
 			expect(blockDiv?.tagName).toBe('DIV');
 
-			// Content area should be a div
-			const contentDiv = blockDiv?.querySelector(
-				'.pm-integration-features-group__content'
+			// Features area should be a div - always rendered in HTML
+			const featuresDiv = blockDiv?.querySelector(
+				'.pm-integration-features-group__features'
 			);
-			expect(contentDiv?.tagName).toBe('DIV');
+			// Features are always in the HTML, frontend JS controls visibility
+			expect(featuresDiv).toBeInTheDocument();
 		});
 
 		it('renders without accessibility violations in basic structure', () => {

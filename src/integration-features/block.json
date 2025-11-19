@@ -77,7 +77,10 @@
 		"popup-maker/oneOpenPerGroup"
 	],
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
+	"editorStyle": [
+		"dashicons",
+		"file:./index.css"
+	],
 	"style": [
 		"dashicons",
 		"file:./style-index.css"

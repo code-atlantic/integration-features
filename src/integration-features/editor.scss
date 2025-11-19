@@ -32,7 +32,8 @@
 	// Make accordion icon clearly clickable
 	.pm-integration-feature__icon[role="button"] {
 		cursor: pointer;
-		transition: color 0.2s ease;
+		transition: color 0.2s ease, transform 300ms ease-in-out;
+		transform-origin: center;
 		padding: 0.25em;
 		margin: -0.25em;
 		border-radius: 3px;
@@ -45,6 +46,16 @@
 		&:focus {
 			outline: 2px solid #0073aa;
 			outline-offset: 2px;
+		}
+
+		// Plus style - rotate 45deg when open (+ becomes X)
+		&.dashicons-plus.is-open {
+			transform: rotate(45deg);
+		}
+
+		// Arrow style - rotate 180deg when open (down arrow becomes up arrow)
+		&.dashicons-arrow-down-alt2.is-open {
+			transform: rotate(180deg);
 		}
 	}
 

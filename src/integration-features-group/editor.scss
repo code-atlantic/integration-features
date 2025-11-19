@@ -3,6 +3,7 @@
  */
 
 .wp-block-popup-maker-integration-features-group {
+
 	// Selected state
 	&.is-selected {
 		.pm-integration-features-group {
@@ -19,8 +20,121 @@
 	}
 }
 
+// Header layout - Icon | Heading/Subtext (icon picker in toolbar)
+.pm-integration-features-group__header {
+	display: flex;
+	gap: 1.5rem;
+	align-items: flex-start;
+	padding: 2rem;
+	border-radius: 8px;
+	background: #fafafa;
+	position: relative;
+
+	// Icon section
+	.pm-integration-features-group__icon {
+		flex-shrink: 0;
+		width: 60px;
+		height: 60px;
+		font-size: 32px;
+		line-height: 1;
+		border-radius: 8px;
+		padding: 12px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	// Text section (heading + subheading)
+	.pm-integration-features-group__text {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		align-self: center;
+	}
+
+	// Collapse toggle indicator
+	.pm-integration-features-group__toggle {
+		color: #6b7280;
+		flex-shrink: 0;
+		font-size: 2em;
+		margin-left: auto;
+		transition: transform 0.2s ease;
+		width: 1em;
+		height: 1em;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&::before {
+			display: inline-block;
+			width: 1em;
+			height: 1em;
+			text-align: center;
+			line-height: 1.18em;
+			transform-origin: center center;
+		}
+	}
+
+	// Chevron style rotation (down when collapsed, up when expanded)
+	.pm-integration-features-group[data-icon-animation='rotate-180'] .pm-integration-features-group__toggle {
+		&.is-collapsed {
+			transform: rotate(0deg);
+		}
+
+		&.is-expanded {
+			transform: rotate(180deg);
+		}
+	}
+
+	// Plus/X style rotation (rotate when expanded)
+	.pm-integration-features-group[data-icon-animation='rotate-45'] .pm-integration-features-group__toggle {
+		&.is-collapsed {
+			transform: rotate(0deg);
+		}
+
+		&.is-expanded {
+			transform: rotate(45deg);
+		}
+	}
+
+	// Heading
+	.pm-integration-features-group__heading {
+		margin: 0;
+		// font-size: 1em;
+		// font-weight: 600;
+		// line-height: 1.4;
+
+		&:focus {
+			outline: 2px solid #0073aa;
+			outline-offset: -2px;
+		}
+	}
+
+	// Subheading
+	.pm-integration-features-group__subheading {
+		margin: 0;
+		// font-size: 0.8rem;
+		color: #6b7280;
+		// line-height: 1.5;
+
+		&:focus {
+			outline: 2px solid #0073aa;
+			outline-offset: -2px;
+		}
+	}
+}
+
 // InnerBlocks area styling
-.pm-integration-features-group__content {
+.pm-integration-features-group__features {
+	padding: 0 2rem 2rem;
+
+	// Hidden state
+	&.is-hidden {
+		display: none !important;
+	}
+
 	.block-list-appender {
 		margin-top: 1rem;
 	}
@@ -33,7 +147,7 @@
 }
 
 // Placeholder styling for empty slots
-.pm-integration-features-group__icon,
+// .pm-integration-features-group__icon,
 .pm-integration-features-group__heading,
 .pm-integration-features-group__subheading {
 	&:empty::before {
@@ -54,5 +168,13 @@
 		&__subheading {
 			color: #b0b0b0;
 		}
+	}
+}
+
+// When features are visible in editor, remove bottom border radius from header
+.wp-block-popup-maker-integration-features-group {
+	.pm-integration-features-group__header:has(~ .pm-integration-features-group__features:not(.is-hidden)) {
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 }

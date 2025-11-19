@@ -93,10 +93,10 @@ export default function Save({ attributes }: SaveProps) {
 	const currentTier = TIER_CONFIG[tier] || TIER_CONFIG.free;
 
 	/**
-	 * Get accordion icon based on style
-	 * Frontend always renders closed state
+	 * Get accordion icon class based on style
+	 * Frontend always renders closed state - Dashicons will be applied via CSS
 	 */
-	const icon = iconStyle === 'plus-minus' ? '+' : '▼';
+	const iconClass = iconStyle === 'plus-minus' ? 'dashicons-plus' : 'dashicons-arrow-down-alt2';
 
 	/**
 	 * Block wrapper props
@@ -143,14 +143,11 @@ export default function Save({ attributes }: SaveProps) {
 						value={label}
 					/>
 
-					{/* Accordion Icon - dynamically updated by Interactivity API */}
-					<span
-						className="pm-integration-feature__icon"
+					{/* Accordion Icon - Dashicon with dynamic class updates */}
+					<i
+						className={`pm-integration-feature__icon dashicons ${iconClass}`}
 						aria-hidden="true"
-						data-wp-text="state.currentIcon"
-					>
-						{icon}
-					</span>
+					/>
 				</summary>
 
 				{/* Description Panel - Filter empty child blocks */}

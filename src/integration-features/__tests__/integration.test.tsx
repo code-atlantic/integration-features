@@ -35,6 +35,9 @@ jest.mock('@wordpress/block-editor', () => ({
 	BlockControls: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid="block-controls">{children}</div>
 	),
+	InspectorControls: ({ children }: { children: React.ReactNode }) => (
+		<div data-testid="inspector-controls">{children}</div>
+	),
 	RichText: Object.assign(
 		({
 			value,
@@ -89,6 +92,18 @@ jest.mock('@wordpress/components', () => ({
 			))}
 		</div>
 	),
+	PanelBody: ({ children, title }: { children: React.ReactNode; title: string }) => (
+		<div data-testid="panel-body" title={title}>
+			{children}
+		</div>
+	),
+	FontSizePicker: ({ value, onChange }: any) => (
+		<input
+			data-testid="font-size-picker"
+			value={value}
+			onChange={(e) => onChange(e.target.value)}
+		/>
+	),
 }));
 
 jest.mock('@wordpress/data', () => ({
@@ -103,6 +118,12 @@ jest.mock('@wordpress/data', () => ({
 
 jest.mock('@wordpress/i18n', () => ({
 	__: (text: string) => text,
+}));
+
+jest.mock('@wordpress/element', () => ({
+	...jest.requireActual('react'),
+	useMemo: jest.requireActual('react').useMemo,
+	useEffect: jest.requireActual('react').useEffect,
 }));
 
 describe('Integration Tests', () => {
@@ -150,9 +171,9 @@ describe('Integration Tests', () => {
 			expect(metadata.attributes.isOpen.default).toBe(false);
 		});
 
-		it('iconStyle attribute defaults to chevron', () => {
+		it('iconStyle attribute defaults to plus-minus', () => {
 			const metadata = require('../block.json');
-			expect(metadata.attributes.iconStyle.default).toBe('chevron');
+			expect(metadata.attributes.iconStyle.default).toBe('plus-minus');
 		});
 
 		it('iconStyle attribute only accepts valid values', () => {
@@ -199,9 +220,7 @@ describe('Integration Tests', () => {
 			expect(useInnerBlocksProps).toHaveBeenCalledWith(
 				expect.any(Object),
 				expect.objectContaining({
-					template: expect.arrayContaining([
-						expect.arrayContaining(['core/paragraph']),
-					]),
+					template: [],
 					templateLock: false,
 					allowedBlocks: expect.arrayContaining([
 						'core/paragraph',

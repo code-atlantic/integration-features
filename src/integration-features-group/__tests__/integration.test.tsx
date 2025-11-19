@@ -128,12 +128,16 @@ describe('Block Integration Tests', () => {
 			expect(metadata.editorScript).toBe('file:./index.js');
 		});
 
-		it('has editorStyle', () => {
-			expect(metadata.editorStyle).toBe('file:./index.css');
+		it('has editorStyle with dashicons dependency', () => {
+			expect(Array.isArray(metadata.editorStyle)).toBe(true);
+			expect(metadata.editorStyle).toContain('wp-dashicons');
+			expect(metadata.editorStyle).toContain('file:./index.css');
 		});
 
-		it('has frontend style', () => {
-			expect(metadata.style).toBe('file:./style-index.css');
+		it('has frontend style with dashicons dependency', () => {
+			expect(Array.isArray(metadata.viewStyle)).toBe(true);
+			expect(metadata.viewStyle).toContain('wp-dashicons');
+			expect(metadata.viewStyle).toContain('file:./style-index.css');
 		});
 
 		it('has viewScriptModule', () => {

@@ -160,13 +160,13 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 	};
 
 	/**
-	 * Get accordion icon based on style and open state
+	 * Get accordion icon class based on style (rotation handled by CSS)
 	 */
-	const getIcon = () => {
+	const getIconClass = () => {
 		if (iconStyle === 'plus-minus') {
-			return isOpen ? '−' : '+';
+			return 'dashicons-plus';
 		}
-		return isOpen ? '▲' : '▼';
+		return 'dashicons-arrow-down-alt2';
 	};
 
 	/**
@@ -334,8 +334,8 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 					{/* Accordion Icon OR Add Description Button */}
 					{hasDescription ? (
 						// Toggle icon when description exists
-						<span
-							className="pm-integration-feature__icon"
+						<i
+							className={`pm-integration-feature__icon dashicons ${getIconClass()} ${isOpen ? 'is-open' : ''}`}
 							aria-hidden="true"
 							onClick={toggleOpen}
 							onKeyDown={(e) => {
@@ -349,9 +349,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 							aria-expanded={isOpen}
 							aria-label={isOpen ? __('Collapse description', 'popup-maker') : __('Expand description', 'popup-maker')}
 							style={{ cursor: 'pointer' }}
-						>
-							{getIcon()}
-						</span>
+						/>
 					) : (
 						// "Add description" affordance when no description
 						label && isSelected && (

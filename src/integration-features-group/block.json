@@ -16,6 +16,31 @@
   ],
   "textdomain": "popup-maker",
   "attributes": {
+    "groupIcon": {
+      "type": "string",
+      "default": "admin-plugins"
+    },
+    "groupIconColor": {
+      "type": "string",
+      "default": "#1e1e1e"
+    },
+    "groupIconBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "heading": {
+      "type": "string",
+      "default": ""
+    },
+    "headingTag": {
+      "type": "string",
+      "enum": ["h2", "h3"],
+      "default": "h2"
+    },
+    "subheading": {
+      "type": "string",
+      "default": ""
+    },
     "iconAnimation": {
       "type": "string",
       "enum": ["rotate-45", "rotate-180"],
@@ -29,9 +54,29 @@
       "type": "boolean",
       "default": false
     },
+    "groupCollapsible": {
+      "type": "boolean",
+      "default": false
+    },
+    "groupCollapsed": {
+      "type": "boolean",
+      "default": true
+    },
     "hasFeatures": {
       "type": "boolean",
       "default": false
+    },
+    "headerBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "headingColor": {
+      "type": "string",
+      "default": ""
+    },
+    "subheadingColor": {
+      "type": "string",
+      "default": ""
     }
   },
   "supports": {
@@ -63,12 +108,14 @@
     }
   },
   "providesContext": {
+    "popup-maker/groupIcon": "groupIcon",
     "popup-maker/iconAnimation": "iconAnimation",
     "popup-maker/groupId": "clientId",
     "popup-maker/oneOpenPerGroup": "oneOpenPerGroup"
   },
   "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
+  "editorStyle": ["wp-dashicons", "file:./index.css"],
   "style": "file:./style-index.css",
-  "viewScriptModule": "file:./view.js"
+  "viewScriptModule": "file:./view.js",
+  "viewStyle": ["wp-dashicons", "file:./style-index.css"]
 }

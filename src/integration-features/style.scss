@@ -11,9 +11,11 @@
 
 .pm-integration-feature {
 	--default-spacing: 1rem;
+	--default-background: #fafafa;
+	--hover-background: #eee;
 
 	position: relative;
-	margin: 0 0 var(--default-spacing);
+	margin: 0;
 	border-radius: 10px;
 	background: transparent;
 	box-shadow: 0 4px 16px transparent;
@@ -31,35 +33,51 @@
 		summary {
 			cursor: pointer;
 			list-style: none; // Remove default marker
-			border-top-left-radius: 8px;
-			border-top-right-radius: 8px;
-			padding: var(--default-spacing)  0 0; // NO left/right padding on closed state
+			border-radius: 8px;
+			padding: var(--default-spacing); // NO left/right padding on closed state
+			transition: background-color 150ms ease;
+			background-color: transparent; // White by default
 
 			// Remove default marker in WebKit browsers
 			&::-webkit-details-marker {
 				display: none;
 			}
+
+			// Hover effect
+			&:hover {
+				background-color: var(--hover-background);
+			}
 		}
 
-		// When accordion is open, add white background with shadow
+		// When accordion is open, expand with shadow
 		&[open] {
-			margin: 0 calc(-1 * var(--default-spacing) - 1px) var(--default-spacing); // No vertical margin to prevent text push down
-			background: #fff;
+			margin: 0 0 var(--default-spacing); // No vertical margin to prevent text push down
+			background: transparent;
 			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 			padding: 0; // No padding needed - summary handles it
 			// Inverse the negative margin and add the padding to the width
-			min-width: calc(100% + (calc(var(--default-spacing) + 1px) * 2)); // Expand to fill with negative margin
-			border-radius: var(--default-spacing);
+			// min-width: calc(100% + (calc(var(--default-spacing) + 1px) * 2)); // Expand to fill with negative margin
+
 			summary {
-				padding: var(--default-spacing) calc(var(--default-spacing) + 1px) 0; // Reduced padding to work with negative margins
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+				border-bottom: 1px solid #e5e7eb;
+				// padding: var(--default-spacing) calc(var(--default-spacing) + 1px) 0; // Reduced padding to work with negative margins
+				background-color: transparent; // White when open too
+
+				&:hover {
+					background-color: var(--hover-background); // Hover still works when open
+				}
 			}
 		}
+
 
 		// Hide details elements that have truly empty descriptions
 		&:has(.pm-integration-feature__description:empty),
 		&:has(.pm-integration-feature__description > p:only-child:empty),
 		&:has(.pm-integration-feature__description > :only-child:empty) {
 			summary {
+
 				// Hide the accordion icon for empty content
 				.pm-integration-feature__icon {
 					display: none;
@@ -71,7 +89,14 @@
 	// Non-accordion variant (no description)
 	&:not(.has-description) {
 		// Match closed accordion styling exactly - NO left/right padding
-		padding: var(--default-spacing) 0 0;
+		padding: var(--default-spacing);
+		transition: background-color 150ms ease;
+		background-color: transparent; // White by default
+
+		// Hover effect
+		&:hover {
+			background-color: var(--hover-background);
+		}
 	}
 }
 
@@ -176,13 +201,33 @@
 	flex-shrink: 0;
 	font-size: 1.4em; // Larger than parent font size for visibility
 	color: #6c757d;
-	width: 1.4em;
-	text-align: center;
+	width: 1em;
+	height: 1em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	line-height: 1;
-	font-weight: 700;
+	transition: transform 300ms ease-in-out;
+	transform-origin: center;
 
-	// Icon changes handled by dynamic content (▼/▲ or +/−)
-	// No CSS transitions needed since the character itself changes
+	&::before {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		text-align: center;
+		line-height: 1.18em;
+		transform-origin: center center;
+	}
+
+	// Plus style - rotate 45deg when open (+ becomes X)
+	details[open] &.dashicons-plus {
+		transform: rotate(45deg);
+	}
+
+	// Arrow style - rotate 180deg when open (down arrow becomes up arrow)
+	details[open] &.dashicons-arrow-down-alt2 {
+		transform: rotate(180deg);
+	}
 }
 
 // ============================================
@@ -194,9 +239,10 @@
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	font-size: 16px;
+	background-color: var(--default-background);
 
 	// Style inner blocks
-	> * {
+	>* {
 		margin-top: 0.5rem;
 		margin-bottom: 0.5rem;
 

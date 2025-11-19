@@ -14,18 +14,28 @@ jest.mock('@wordpress/block-editor', () => ({
 		save: jest.fn((props) => props),
 	},
 	useInnerBlocksProps: {
-		save: jest.fn((props) => ({
-			...props,
-			children: [],
-		})),
+		save: jest.fn((props) => props),
+	},
+	RichText: {
+		Content: ({ tagName: Tag = 'div', value, ...props }: any) => (
+			<Tag {...props}>{value}</Tag>
+		),
 	},
 }));
 
 describe('Save Component', () => {
 	const defaultAttributes: IntegrationFeaturesGroupAttributes = {
+		groupIcon: 'admin-plugins',
+		groupIconColor: '#1e1e1e',
+		groupIconBackgroundColor: '',
+		heading: '',
+		headingTag: 'h2',
+		subheading: '',
 		iconAnimation: 'rotate-45',
 		oneOpenPerGroup: true,
 		defaultOpen: false,
+		groupCollapsible: false,
+		groupCollapsed: true,
 		hasFeatures: false,
 	};
 
@@ -169,14 +179,15 @@ describe('Save Component', () => {
 		expect(context.defaultOpen).toBe(true);
 	});
 
-	it('renders InnerBlocks content area', () => {
+	it('always renders InnerBlocks features area in HTML (frontend JS handles visibility)', () => {
 		const { container } = render(
 			<Save attributes={defaultAttributes} />
 		);
 
-		const contentDiv = container.querySelector(
-			'.pm-integration-features-group__content'
+		const featuresDiv = container.querySelector(
+			'.pm-integration-features-group__features'
 		);
-		expect(contentDiv).toBeInTheDocument();
+		// Features are always in the HTML, frontend JS controls visibility
+		expect(featuresDiv).toBeInTheDocument();
 	});
 });

@@ -15,8 +15,9 @@ jest.mock('@wordpress/i18n', () => ({
 }));
 
 jest.mock('@wordpress/block-editor', () => ({
-	useBlockProps: jest.fn(() => ({
-		className: 'wp-block-test',
+	useBlockProps: jest.fn((props) => ({
+		...props,
+		className: `wp-block-test ${props?.className || ''}`,
 	})),
 	useInnerBlocksProps: jest.fn((props) => ({
 		...props,
@@ -24,9 +25,22 @@ jest.mock('@wordpress/block-editor', () => ({
 	})),
 	BlockControls: ({ children }) => <div>{children}</div>,
 	InspectorControls: ({ children }) => <div>{children}</div>,
+	RichText: ({ value, onChange, placeholder, className }: any) => (
+		<input
+			className={className}
+			value={value}
+			onChange={(e) => onChange(e.target.value)}
+			placeholder={placeholder}
+		/>
+	),
 }));
 
 jest.mock('@wordpress/components', () => ({
+	Button: ({ children, onClick, className, ...props }: any) => (
+		<button className={className} onClick={onClick} {...props}>
+			{children}
+		</button>
+	),
 	ToolbarGroup: ({ children }) => <div>{children}</div>,
 	ToolbarDropdownMenu: ({ label, controls }) => (
 		<div>
@@ -46,6 +60,26 @@ jest.mock('@wordpress/components', () => ({
 			{children}
 		</div>
 	),
+	ColorPalette: ({ value, onChange }) => (
+		<input
+			type="color"
+			value={value}
+			onChange={(e) => onChange(e.target.value)}
+			data-testid="color-palette"
+		/>
+	),
+	SelectControl: ({ label, value, options, onChange }) => (
+		<label>
+			{label}
+			<select value={value} onChange={(e) => onChange(e.target.value)}>
+				{options.map((opt) => (
+					<option key={opt.value} value={opt.value}>
+						{opt.label}
+					</option>
+				))}
+			</select>
+		</label>
+	),
 	ToggleControl: ({ label, checked, onChange }) => (
 		<label>
 			{label}
@@ -62,11 +96,47 @@ jest.mock('@wordpress/data', () => ({
 	useSelect: jest.fn(() => undefined),
 }));
 
+jest.mock('@wordpress/element', () => ({
+	...jest.requireActual('@wordpress/element'),
+	useMemo: jest.fn((fn) => fn()),
+	useEffect: jest.fn(),
+}));
+
+jest.mock('../components/DashiconPicker', () => {
+	return function DashiconPickerMock({ value, onChange, label }: any) {
+		return (
+			<div data-testid="dashicon-picker">
+				<button onClick={() => onChange('test-icon')}>
+					{label}
+				</button>
+				<span>{value}</span>
+			</div>
+		);
+	};
+});
+
+// Mock hasFeatures - will be overridden in individual tests as needed
+let mockComputeHasFeatures = jest.fn((blocks) => {
+	return blocks && blocks.length > 0;
+});
+
+jest.mock('../lib/hasFeatures', () => ({
+	computeHasFeatures: (...args) => mockComputeHasFeatures(...args),
+}));
+
 describe('Edit Component', () => {
 	const defaultAttributes: IntegrationFeaturesGroupAttributes = {
+		groupIcon: 'admin-plugins',
+		groupIconColor: '#1e1e1e',
+		groupIconBackgroundColor: '',
+		heading: '',
+		headingTag: 'h2',
+		subheading: '',
 		iconAnimation: 'rotate-45',
 		oneOpenPerGroup: true,
 		defaultOpen: false,
+		groupCollapsible: false,
+		groupCollapsed: true,
 		hasFeatures: false,
 	};
 
@@ -103,7 +173,7 @@ describe('Edit Component', () => {
 		expect(screen.getByText('Accordion Settings')).toBeInTheDocument();
 	});
 
-	it('renders icon animation toolbar options', () => {
+	it('renders icon animation select control in sidebar', () => {
 		render(
 			<Edit
 				attributes={defaultAttributes}
@@ -113,8 +183,9 @@ describe('Edit Component', () => {
 			/>
 		);
 
-		expect(screen.getByText('Rotate 45° (Plus-to-X)')).toBeInTheDocument();
-		expect(screen.getByText('Rotate 180° (Chevron Flip)')).toBeInTheDocument();
+		expect(screen.getByLabelText('Toggle Icon Style')).toBeInTheDocument();
+		expect(screen.getByText('Plus (+)')).toBeInTheDocument();
+		expect(screen.getByText('Arrow')).toBeInTheDocument();
 	});
 
 	it('renders toggle controls for accordion settings', () => {
@@ -132,6 +203,8 @@ describe('Edit Component', () => {
 	});
 
 	it('applies correct CSS classes based on hasFeatures', () => {
+		// Test with hasFeatures = false
+		mockComputeHasFeatures.mockReturnValue(false);
 		const { container: container1 } = render(
 			<Edit
 				attributes={{
@@ -148,7 +221,8 @@ describe('Edit Component', () => {
 		let blockElement = container1.querySelector('.pm-integration-features-group');
 		expect(blockElement).not.toHaveClass('has-features');
 
-		// Re-render with hasFeatures true
+		// Test with hasFeatures = true
+		mockComputeHasFeatures.mockReturnValue(true);
 		const { container: container2 } = render(
 			<Edit
 				attributes={{

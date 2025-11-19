@@ -9,19 +9,6 @@ import { store, getContext, getElement } from '@wordpress/interactivity';
  * Handles accordion toggle behavior and icon updates on the frontend
  */
 store('popup-maker/integration-feature', {
-	state: {
-		get currentIcon() {
-			const context = getContext();
-			const { iconStyle, isOpen } = context;
-
-			console.log('[Interactivity API] currentIcon getter - isOpen:', isOpen, 'iconStyle:', iconStyle);
-
-			if (iconStyle === 'plus-minus') {
-				return isOpen ? '−' : '+';
-			}
-			return isOpen ? '▲' : '▼';
-		},
-	},
 	callbacks: {
 		/**
 		 * Initialize - runs when the block is mounted
@@ -49,7 +36,7 @@ store('popup-maker/integration-feature', {
 				// Listen for native toggle events and update context
 				details.addEventListener('toggle', () => {
 					context.isOpen = details.open;
-					console.log('[Interactivity API] toggle event - updated isOpen to:', details.open);
+					console.log('[Integration Feature] toggle event - updated isOpen to:', details.open);
 
 					// Notify parent group if present
 					const parentGroup = ref.closest('[data-wp-interactive="popup-maker/integration-features-group"]');
@@ -61,6 +48,21 @@ store('popup-maker/integration-feature', {
 						}
 					}
 				});
+
+				// Listen for group requesting this feature to close
+				const parentGroup = ref.closest('[data-wp-interactive="popup-maker/integration-features-group"]');
+				if (parentGroup) {
+					parentGroup.addEventListener('pm-group-close-feature', (e) => {
+						const targetFeatureId = e.detail?.featureId;
+						const currentFeatureId = details.dataset.featureId || details.id;
+
+						if (targetFeatureId === currentFeatureId && details.open) {
+							console.log('[Integration Feature] Group requested close:', currentFeatureId);
+							details.removeAttribute('open');
+							context.isOpen = false;
+						}
+					});
+				}
 			}
 		},
 	},
