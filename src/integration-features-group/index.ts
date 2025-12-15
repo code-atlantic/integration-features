@@ -3,7 +3,7 @@
  */
 
 import { registerBlockType, createBlock } from '@wordpress/blocks';
-import type { BlockConfiguration, BlockInstance } from '@wordpress/blocks';
+import type { BlockConfiguration } from '@wordpress/blocks';
 import './style.scss';
 import Edit from './edit';
 import Save from './save';
@@ -20,23 +20,35 @@ const transforms = {
 			type: 'block' as const,
 			isMultiBlock: true,
 			blocks: ['popup-maker/integration-feature'],
-			transform: (features: BlockInstance[]) => {
+			transform: (attributesArray: Array<Record<string, any>>) => {
+				// Safety check - ensure we have an array
+				// Note: isMultiBlock transforms receive attributes arrays, not full blocks
+				if (!attributesArray || !Array.isArray(attributesArray)) {
+					return createBlock(
+						'popup-maker/integration-features-group',
+						{
+							heading: '',
+							subheading: '',
+							groupIcon: 'admin-plugins',
+							hasFeatures: false,
+							featureCount: 0,
+						}
+					);
+				}
+
 				// Create a new group with the selected features as children
+				// Note: innerBlocks (descriptions) are not preserved with isMultiBlock transforms
 				return createBlock(
 					'popup-maker/integration-features-group',
 					{
 						heading: '',
 						subheading: '',
 						groupIcon: 'admin-plugins',
-						hasFeatures: features.length > 0,
+						hasFeatures: attributesArray.length > 0,
+						featureCount: attributesArray.length,
 					},
-					// Recreate each feature block to preserve attributes and inner blocks
-					features.map((feature) =>
-						createBlock(
-							'popup-maker/integration-feature',
-							feature.attributes,
-							feature.innerBlocks
-						)
+					attributesArray.map((attrs) =>
+						createBlock('popup-maker/integration-feature', attrs)
 					)
 				);
 			},

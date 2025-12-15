@@ -1,0 +1,78 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "popup-maker/section-heading",
+	"version": "1.0.0",
+	"title": "Section Heading",
+	"category": "text",
+	"icon": "heading",
+	"description": "A section heading with optional View All link and subtitle.",
+	"keywords": ["heading", "section", "title", "view all", "link"],
+	"textdomain": "popup-maker",
+	"attributes": {
+		"heading": {
+			"type": "string",
+			"default": ""
+		},
+		"headingTag": {
+			"type": "string",
+			"enum": ["h2", "h3"],
+			"default": "h2"
+		},
+		"subtitle": {
+			"type": "string",
+			"default": ""
+		},
+		"viewAllLink": {
+			"type": "object",
+			"default": {
+				"url": "",
+				"opensInNewTab": false
+			}
+		},
+		"isExternalLink": {
+			"type": "boolean",
+			"default": false
+		},
+		"headingColor": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitleColor": {
+			"type": "string",
+			"default": ""
+		},
+		"linkColor": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide", "full"],
+		"className": true,
+		"customClassName": true,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"text": false,
+			"link": false
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

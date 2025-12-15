@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Integration Features
  * Description:       Example block scaffolded with Create Block tool.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            The WordPress Contributors
@@ -49,5 +49,8 @@ function create_block_integration_features_block_init() {
 	register_block_type( __DIR__ . '/build/integration-features-group', [
 		'view_script_module' => 'popup-maker/integration-features-group-view',
 	] );
+
+	// Register the section-heading block type
+	register_block_type( __DIR__ . '/build/section-heading' );
 }
 add_action( 'init', 'create_block_integration_features_block_init' );

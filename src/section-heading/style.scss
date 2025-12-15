@@ -1,0 +1,98 @@
+/**
+ * Section Heading - Frontend & Editor Styles
+ */
+
+.pm-section-heading {
+	--heading-color: #1e1e1e;
+	--subtitle-color: #4a5568;
+	--link-color: #7c3aed;
+
+	margin-bottom: 1.5rem;
+
+	// Header row: heading + view all link
+	&__header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.5rem;
+	}
+
+	// Heading
+	&__title {
+		margin: 0;
+		color: var(--heading-color);
+		flex: 1;
+		min-width: 0;
+	}
+
+	// View All link
+	&__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		color: var(--link-color);
+		text-decoration: none;
+		font-size: 0.875rem;
+		font-weight: 500;
+		white-space: nowrap;
+		flex-shrink: 0;
+		transition: color 150ms ease;
+
+		&:hover {
+			text-decoration: underline;
+		}
+
+		&:focus-visible {
+			outline: 2px solid currentColor;
+			outline-offset: 2px;
+		}
+
+		// Icon styling (both arrow-right and external)
+		svg {
+			width: 1em;
+			height: 1em;
+			flex-shrink: 0;
+		}
+	}
+
+	// Subtitle
+	&__subtitle {
+		margin: 0;
+		color: var(--subtitle-color);
+	}
+
+	// Responsive: Stack on mobile
+	@media (max-width: 480px) {
+		&__header {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.5rem;
+		}
+	}
+
+	// Accessibility: High contrast mode
+	@media (prefers-contrast: high) {
+		&__link {
+			text-decoration: underline;
+		}
+	}
+
+	// Accessibility: Reduced motion
+	@media (prefers-reduced-motion: reduce) {
+		&__link {
+			transition: none;
+		}
+	}
+
+	// Print styles
+	@media print {
+		&__link {
+			&::after {
+				content: ' (' attr(href) ')';
+				font-size: 0.75em;
+			}
+		}
+	}
+}
