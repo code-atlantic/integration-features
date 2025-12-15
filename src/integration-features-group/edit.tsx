@@ -398,7 +398,7 @@ export default function Edit({
 								onFocus={() => setIsEditingText(true)}
 								onBlur={() => setIsEditingText(false)}
 								placeholder={__('Integration name...', 'popup-maker')}
-								className="pm-integration-features-group__heading"
+								className="pm-integration-features-group__heading pm-toc-heading"
 								style={{
 									color: headingColor || undefined
 								}}

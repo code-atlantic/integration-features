@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2024-12-15
+
+### Added
+- Shared `pm-toc-heading` class on all section headings for Table of Contents extraction
+  - Applied to `popup-maker/section-heading` title
+  - Applied to `popup-maker/integration-features-group` heading
+  - Enables consistent targeting with `.pm-toc-heading` selector
+
 ## [0.2.0] - 2024-12-14
 
 ### Added

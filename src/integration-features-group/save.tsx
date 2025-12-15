@@ -132,7 +132,7 @@ export default function Save({ attributes }: SaveProps) {
 						<div className="pm-integration-features-group__heading-wrapper">
 							<RichText.Content
 								tagName={headingTag as any}
-								className="pm-integration-features-group__heading"
+								className="pm-integration-features-group__heading pm-toc-heading"
 								value={heading}
 								style={{
 									color: headingColor || undefined
