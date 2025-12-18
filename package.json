@@ -1,6 +1,6 @@
 {
 	"name": "integration-features-block",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Gutenberg block for displaying integration features with tier badges and optional accordion descriptions.",
 	"author": "Code Atlantic",
 	"license": "GPL-2.0-or-later",
