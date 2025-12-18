@@ -69,7 +69,7 @@ jobs:
           echo "$CHANGELOG" > changelog_extract.txt
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: integration-features-${{ steps.get_version.outputs.VERSION }}.zip
           body_path: changelog_extract.txt
