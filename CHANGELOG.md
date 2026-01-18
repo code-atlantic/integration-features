@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.3] - 2025-01-18
+
+### Changed
+- Reverted shared styles approach - each block now has standalone styles
+- Category integrations now has complete copy of integration-feature styles
+  - Scoped to `.pm-category-integrations .pm-integration-feature` for isolation
+  - Exact match of original integration-features styling
+  - No CSS variable indirection - direct values for reliability
+
+### Fixed
+- Potential CSS variable resolution issues from shared styles approach
+
 ## [0.4.2] - 2025-01-18
 
 ### Changed

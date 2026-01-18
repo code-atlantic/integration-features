@@ -1,9 +1,357 @@
 /**
  * Integration Feature Block - Frontend & Editor Styles
  *
- * Imports shared styles and adds block-specific overrides.
+ * Styles applied both in the editor and on the frontend.
+ * Uses BEM methodology for consistent naming.
  */
 
-@import '../shared';
+// ============================================
+// Block Root
+// ============================================
 
-// Block-specific styles can be added here if needed
+.pm-integration-feature {
+	--default-spacing: 1rem;
+	--default-background: #fafafa;
+	--hover-background: #eee;
+
+	position: relative;
+	margin: 0;
+	border-radius: 10px;
+	background: transparent;
+	box-shadow: 0 4px 16px transparent;
+	transition: background 300ms ease-in-out, box-shadow 300ms ease-in-out;
+	width: 100%;
+	max-width: 100%;
+	font-size: 1.8rem;
+	border: 0; // Prevent border from appearing/disappearing and causing text jump
+
+	// Accordion variant (has description content)
+	&.has-description {
+		border: 0; // Ensure no border on closed state
+		padding: 0;
+
+		summary {
+			cursor: pointer;
+			list-style: none; // Remove default marker
+			border-radius: 8px;
+			padding: var(--default-spacing); // NO left/right padding on closed state
+			transition: background-color 150ms ease;
+			background-color: transparent; // White by default
+
+			// Remove default marker in WebKit browsers
+			&::-webkit-details-marker {
+				display: none;
+			}
+
+			// Hover effect
+			&:hover {
+				background-color: var(--hover-background);
+			}
+		}
+
+		// When accordion is open, expand with shadow
+		&[open] {
+			margin: 0 0 var(--default-spacing); // No vertical margin to prevent text push down
+			background: transparent;
+			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+			padding: 0; // No padding needed - summary handles it
+
+			summary {
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+				border-bottom: 1px solid #e5e7eb;
+				background-color: transparent; // White when open too
+
+				&:hover {
+					background-color: var(--hover-background); // Hover still works when open
+				}
+			}
+		}
+
+
+		// Hide details elements that have truly empty descriptions
+		&:has(.pm-integration-feature__description:empty),
+		&:has(.pm-integration-feature__description > p:only-child:empty),
+		&:has(.pm-integration-feature__description > :only-child:empty) {
+			summary {
+
+				// Hide the accordion icon for empty content
+				.pm-integration-feature__icon {
+					display: none;
+				}
+			}
+		}
+	}
+
+	// Non-accordion variant (no description)
+	&:not(.has-description) {
+		// Match closed accordion styling exactly - NO left/right padding
+		padding: var(--default-spacing);
+		transition: background-color 150ms ease;
+		background-color: transparent; // White by default
+
+		// Hover effect
+		&:hover {
+			background-color: var(--hover-background);
+		}
+	}
+}
+
+// ============================================
+// Header Section
+// ============================================
+
+.pm-integration-feature__header {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0;
+	min-height: auto;
+
+	// When inside summary (accordion), ensure proper cursor
+	summary & {
+		cursor: pointer;
+	}
+}
+
+// ============================================
+// Tier Badge & Checkmark
+// ============================================
+
+.pm-tier-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.4em 0.75em;
+	font-size: 0.75em; // 75% of parent font size
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	border-radius: 3px;
+	flex-shrink: 0;
+	line-height: 1.2;
+
+	// FREE tier - Neutral gray (optional, hidden by default)
+	&--free {
+		background-color: #6c757d;
+		color: #ffffff;
+	}
+
+	// PRO tier - Uses CSS variable --action
+	&--pro {
+		background-color: var(--action, #1dbe61); // Fallback to brand green
+		color: #ffffff;
+	}
+
+	// PRO+ tier - Uses CSS variable --secondary
+	&--proplus {
+		background-color: var(--secondary, #8267F6); // Fallback to brand purple
+		color: #ffffff;
+		position: relative;
+
+		// Add sparkle effect for premium tier
+		&::before {
+			content: '✨';
+			margin-right: 0.25em;
+			font-size: 0.875em;
+		}
+	}
+}
+
+.pm-tier-checkmark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	font-size: 1em; // Match badge visual weight
+	color: var(--action, #1dbe61); // Use action color (green) for checkmark
+	width: 1.2em;
+	height: 1.2em;
+
+	&::before {
+		font-size: 1.5em; // Make the checkmark icon larger
+		line-height: 1;
+	}
+}
+
+// ============================================
+// Feature Label
+// ============================================
+
+.pm-integration-feature__label {
+	flex: 1;
+	font-size: 1em; // Inherit parent font size
+	font-weight: 500;
+	color: #1e1e1e;
+	line-height: 1.4;
+
+	// Ensure label doesn't break layout
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
+// Link variant of label
+.pm-integration-feature__link {
+	color: inherit;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+// ============================================
+// Accordion Icon
+// ============================================
+
+.pm-integration-feature__icon {
+	flex-shrink: 0;
+	font-size: 1.4em; // Larger than parent font size for visibility
+	color: #6c757d;
+	width: 1em;
+	height: 1em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	transition: transform 300ms ease-in-out;
+	transform-origin: center;
+
+	&::before {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		text-align: center;
+		line-height: 1.18em;
+		transform-origin: center center;
+	}
+
+	// Plus style - rotate 45deg when open (+ becomes X)
+	details[open] &.dashicons-plus {
+		transform: rotate(45deg);
+	}
+
+	// Arrow style - rotate 180deg when open (down arrow becomes up arrow)
+	details[open] &.dashicons-arrow-down-alt2 {
+		transform: rotate(180deg);
+	}
+}
+
+// ============================================
+// Description Panel
+// ============================================
+
+.pm-integration-feature__description {
+	padding: 20px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	font-size: 16px;
+	background-color: #fafafa;
+
+	// Style inner blocks
+	>* {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// Paragraph styles
+	p {
+		color: #4a5568;
+		line-height: 1.6;
+		font-size: 1em; // Inherit parent font size
+	}
+
+	// List styles
+	ul,
+	ol {
+		padding-left: 1.5em;
+		color: #4a5568;
+		font-size: 1em; // Inherit parent font size
+
+		li {
+			margin: 0.25em 0;
+		}
+	}
+
+	// Heading styles
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: #2d3748;
+		margin-top: 0.75em;
+		margin-bottom: 0.375em;
+		font-size: 1.125em; // 112.5% of parent for hierarchy
+		font-weight: 600;
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+// Focus styles for keyboard navigation
+.pm-integration-feature {
+	summary:focus {
+		outline: 2px solid #0073aa;
+		outline-offset: 2px;
+		border-radius: 2px;
+	}
+
+	// High contrast mode support
+	@media (prefers-contrast: high) {
+		&.has-description details[open] {
+			border: 2px solid currentColor;
+		}
+
+		.pm-tier-badge {
+			border: 1px solid currentColor;
+		}
+	}
+
+	// Reduced motion support
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			transition: none !important;
+			animation: none !important;
+		}
+	}
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	.pm-integration-feature {
+		box-shadow: none;
+		page-break-inside: avoid;
+
+		// Always show description when printing
+		&.has-description {
+			details {
+				border: 1px solid #e5e7eb;
+				border-radius: 4px;
+				padding: 0.5rem;
+
+				summary {
+					display: flex;
+				}
+
+				.pm-integration-feature__description {
+					display: block !important;
+				}
+			}
+		}
+
+		.pm-integration-feature__icon {
+			display: none;
+		}
+	}
+}

@@ -1,11 +1,91 @@
 /**
  * Category Integrations - Frontend & Editor Styles
  *
- * Imports shared styles (pm-integration-feature, pm-tier-checkmark)
- * and defines category-integrations specific layout.
+ * Contains category-integrations specific layout plus copied
+ * pm-integration-feature styles for standalone operation.
  */
 
-@import '../shared';
+// ============================================
+// Tier Checkmark (copied from integration-features)
+// ============================================
+
+.pm-tier-checkmark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	font-size: 1em; // Match badge visual weight
+	color: var(--action, #1dbe61); // Use action color (green) for checkmark
+	width: 1.2em;
+	height: 1.2em;
+
+	&::before {
+		font-size: 1.5em; // Make the checkmark icon larger
+		line-height: 1;
+	}
+}
+
+// ============================================
+// Integration Feature Item (copied from integration-features)
+// For items inside category-integrations block
+// ============================================
+
+.pm-category-integrations .pm-integration-feature {
+	--default-spacing: 1rem;
+	--default-background: #fafafa;
+	--hover-background: #eee;
+
+	position: relative;
+	margin: 0;
+	border-radius: 10px;
+	background: transparent;
+	box-shadow: 0 4px 16px transparent;
+	transition: background 300ms ease-in-out, box-shadow 300ms ease-in-out;
+	width: 100%;
+	max-width: 100%;
+	font-size: 1.8rem;
+	border: 0;
+
+	// Non-accordion variant (category-integrations uses this)
+	padding: var(--default-spacing);
+	transition: background-color 150ms ease;
+	background-color: transparent;
+
+	&:hover {
+		background-color: var(--hover-background);
+	}
+}
+
+.pm-category-integrations .pm-integration-feature__header {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0;
+	min-height: auto;
+}
+
+.pm-category-integrations .pm-integration-feature__label {
+	flex: 1;
+	font-size: 1em;
+	font-weight: 500;
+	color: #1e1e1e;
+	line-height: 1.4;
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
+.pm-category-integrations .pm-integration-feature__link {
+	color: inherit;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+// ============================================
+// Category Integrations Block
+// ============================================
 
 .pm-category-integrations {
 	--group-spacing: 2rem;
