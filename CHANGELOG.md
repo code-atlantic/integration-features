@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2025-01-18
+
+### Changed
+- Category integrations block now uses identical HTML structure to integration-features-group
+  - Changed from `<ul>/<li>` to `<div>` with `.pm-integration-feature` classes
+  - Added checkmark icons (`.pm-tier-checkmark`) before each integration link
+  - Renamed `__links` container to `__features` for consistency
+- Created shared SCSS file (`_shared.scss`) for common component styles
+  - `.pm-tier-badge`, `.pm-tier-checkmark`, `.pm-integration-feature` now shared
+  - Reduces code duplication between blocks
+  - Both integration-features and category-integrations import shared styles
+
+### Fixed
+- Styling inconsistency between category-integrations and integration-features-group blocks
+
 ## [0.4.1] - 2025-01-18
 
 ### Fixed

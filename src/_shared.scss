@@ -1,0 +1,330 @@
+/**
+ * Shared styles for Integration Features blocks
+ *
+ * Contains common variables, mixins, and component styles
+ * used across multiple blocks.
+ */
+
+// ============================================
+// CSS Variables
+// ============================================
+
+:root {
+	--pm-default-spacing: 1rem;
+	--pm-default-background: #fafafa;
+	--pm-hover-background: #eee;
+	--pm-heading-color: #1e1e1e;
+	--pm-subheading-color: #4a5568;
+	--pm-border-radius: 8px;
+	--pm-action-color: #1dbe61;
+	--pm-secondary-color: #8267f6;
+}
+
+// ============================================
+// Tier Badge & Checkmark (shared component)
+// ============================================
+
+.pm-tier-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.4em 0.75em;
+	font-size: 0.75em;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	border-radius: 3px;
+	flex-shrink: 0;
+	line-height: 1.2;
+
+	&--free {
+		background-color: #6c757d;
+		color: #ffffff;
+	}
+
+	&--pro {
+		background-color: var(--action, var(--pm-action-color));
+		color: #ffffff;
+	}
+
+	&--proplus {
+		background-color: var(--secondary, var(--pm-secondary-color));
+		color: #ffffff;
+		position: relative;
+
+		&::before {
+			content: '✨';
+			margin-right: 0.25em;
+			font-size: 0.875em;
+		}
+	}
+}
+
+.pm-tier-checkmark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	font-size: 1em;
+	color: var(--action, var(--pm-action-color));
+	width: 1.2em;
+	height: 1.2em;
+
+	&::before {
+		font-size: 1.5em;
+		line-height: 1;
+	}
+}
+
+// ============================================
+// Integration Feature Item (shared component)
+// ============================================
+
+.pm-integration-feature {
+	--default-spacing: var(--pm-default-spacing, 1rem);
+	--default-background: var(--pm-default-background, #fafafa);
+	--hover-background: var(--pm-hover-background, #eee);
+
+	position: relative;
+	margin: 0;
+	border-radius: 10px;
+	background: transparent;
+	box-shadow: 0 4px 16px transparent;
+	transition: background 300ms ease-in-out, box-shadow 300ms ease-in-out;
+	width: 100%;
+	max-width: 100%;
+	font-size: 1.8rem;
+	border: 0;
+
+	// Accordion variant (has description content)
+	&.has-description {
+		border: 0;
+		padding: 0;
+
+		summary {
+			cursor: pointer;
+			list-style: none;
+			border-radius: 8px;
+			padding: var(--default-spacing);
+			transition: background-color 150ms ease;
+			background-color: transparent;
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+
+			&:hover {
+				background-color: var(--hover-background);
+			}
+		}
+
+		&[open] {
+			margin: 0 0 var(--default-spacing);
+			background: transparent;
+			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+			padding: 0;
+
+			summary {
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+				border-bottom: 1px solid #e5e7eb;
+				background-color: transparent;
+
+				&:hover {
+					background-color: var(--hover-background);
+				}
+			}
+		}
+
+		&:has(.pm-integration-feature__description:empty),
+		&:has(.pm-integration-feature__description > p:only-child:empty),
+		&:has(.pm-integration-feature__description > :only-child:empty) {
+			summary {
+				.pm-integration-feature__icon {
+					display: none;
+				}
+			}
+		}
+	}
+
+	// Non-accordion variant (no description)
+	&:not(.has-description) {
+		padding: var(--default-spacing);
+		transition: background-color 150ms ease;
+		background-color: transparent;
+
+		&:hover {
+			background-color: var(--hover-background);
+		}
+	}
+}
+
+.pm-integration-feature__header {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0;
+	min-height: auto;
+
+	summary & {
+		cursor: pointer;
+	}
+}
+
+.pm-integration-feature__label {
+	flex: 1;
+	font-size: 1em;
+	font-weight: 500;
+	color: #1e1e1e;
+	line-height: 1.4;
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
+// Link variant of label
+.pm-integration-feature__link {
+	color: inherit;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.pm-integration-feature__icon {
+	flex-shrink: 0;
+	font-size: 1.4em;
+	color: #6c757d;
+	width: 1em;
+	height: 1em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	transition: transform 300ms ease-in-out;
+	transform-origin: center;
+
+	&::before {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		text-align: center;
+		line-height: 1.18em;
+		transform-origin: center center;
+	}
+
+	details[open] &.dashicons-plus {
+		transform: rotate(45deg);
+	}
+
+	details[open] &.dashicons-arrow-down-alt2 {
+		transform: rotate(180deg);
+	}
+}
+
+.pm-integration-feature__description {
+	padding: 20px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	font-size: 16px;
+	background-color: var(--pm-default-background);
+
+	> * {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	p {
+		color: #4a5568;
+		line-height: 1.6;
+		font-size: 1em;
+	}
+
+	ul,
+	ol {
+		padding-left: 1.5em;
+		color: #4a5568;
+		font-size: 1em;
+
+		li {
+			margin: 0.25em 0;
+		}
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: #2d3748;
+		margin-top: 0.75em;
+		margin-bottom: 0.375em;
+		font-size: 1.125em;
+		font-weight: 600;
+	}
+}
+
+// ============================================
+// Accessibility
+// ============================================
+
+.pm-integration-feature {
+	summary:focus {
+		outline: 2px solid #0073aa;
+		outline-offset: 2px;
+		border-radius: 2px;
+	}
+
+	@media (prefers-contrast: high) {
+		&.has-description details[open] {
+			border: 2px solid currentColor;
+		}
+
+		.pm-tier-badge {
+			border: 1px solid currentColor;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			transition: none !important;
+			animation: none !important;
+		}
+	}
+}
+
+// ============================================
+// Print Styles
+// ============================================
+
+@media print {
+	.pm-integration-feature {
+		box-shadow: none;
+		page-break-inside: avoid;
+
+		&.has-description {
+			details {
+				border: 1px solid #e5e7eb;
+				border-radius: 4px;
+				padding: 0.5rem;
+
+				summary {
+					display: flex;
+				}
+
+				.pm-integration-feature__description {
+					display: block !important;
+				}
+			}
+		}
+
+		.pm-integration-feature__icon {
+			display: none;
+		}
+	}
+}

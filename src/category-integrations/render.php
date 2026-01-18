@@ -221,36 +221,34 @@ $icon_bg = ! empty( $group_icon_bg_color ) ? $group_icon_bg_color : $group_icon_
 
 	</div>
 
-	<!-- Integration Links List -->
+	<!-- Integration Features List (matches integration-features-group structure) -->
 	<div
-		class="pm-category-integrations__links <?php echo 'collapsed' === $display_mode ? 'is-hidden' : ''; ?>"
+		class="pm-category-integrations__features <?php echo 'collapsed' === $display_mode ? 'is-hidden' : ''; ?>"
 		style="<?php echo esc_attr( $padding_styles ); ?>"
 	>
-		<ul class="pm-category-integrations__list">
-			<?php
-			$count = 0;
+		<?php
+		$count = 0;
 
-			while ( $integrations->have_posts() ) :
-				$integrations->the_post();
-				$count++;
+		while ( $integrations->have_posts() ) :
+			$integrations->the_post();
+			$count++;
 
-				// In tease mode, hide items beyond teaseCount.
-				$is_teased  = ( 'tease' === $display_mode && $count > $tease_count );
-				$item_class = 'pm-category-integrations__item';
-				if ( $is_teased ) {
-					$item_class .= ' is-teased';
-				}
-				?>
-				<li class="<?php echo esc_attr( $item_class ); ?>">
-					<a
-						href="<?php the_permalink(); ?>"
-						class="pm-category-integrations__link"
-					>
+			// In tease mode, hide items beyond teaseCount.
+			$is_teased  = ( 'tease' === $display_mode && $count > $tease_count );
+			$item_class = 'pm-integration-feature';
+			if ( $is_teased ) {
+				$item_class .= ' is-teased';
+			}
+			?>
+			<div style="font-size:1.8rem" class="<?php echo esc_attr( $item_class ); ?>">
+				<div class="pm-integration-feature__header">
+					<span class="pm-tier-checkmark dashicons dashicons-yes" aria-label="<?php esc_attr_e( 'Integration', 'popup-maker' ); ?>"></span>
+					<a href="<?php the_permalink(); ?>" class="pm-integration-feature__label pm-integration-feature__link">
 						<?php the_title(); ?>
 					</a>
-				</li>
-			<?php endwhile; ?>
-		</ul>
+				</div>
+			</div>
+		<?php endwhile; ?>
 
 		<!-- "View all" for tease mode -->
 		<?php if ( 'tease' === $display_mode && $total_count > $tease_count ) : ?>
