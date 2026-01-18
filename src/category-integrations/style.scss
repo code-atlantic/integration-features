@@ -1,25 +1,23 @@
 /**
  * Category Integrations - Frontend & Editor Styles
  *
- * Reuses patterns from integration-features-group for consistent styling.
+ * Matches integration-features-group styling exactly.
  */
 
 .pm-category-integrations {
 	--group-spacing: 2rem;
-	--icon-size: 60px;
+	--icon-size: 1em;
 	--heading-color: #1e1e1e;
 	--subheading-color: #4a5568;
 	--default-background: #fafafa;
 	--hover-background: #eee;
 	--border-radius: 8px;
-	--link-color: #2563eb;
-	--link-hover-color: #1d4ed8;
 
 	position: relative;
 	margin: 0 0 var(--group-spacing);
 
 	// Header section - Icon | Heading/Subheading | Toggle
-	// Reuses structure from integration-features-group
+	// Matches integration-features-group exactly
 	&__header {
 		display: flex;
 		gap: 1.5rem;
@@ -47,13 +45,13 @@
 		border-bottom-right-radius: 0;
 	}
 
-	// Group Icon - Reuses from integration-features-group
+	// Group Icon - Matches integration-features-group
 	&__icon {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--icon-size);
-		height: var(--icon-size);
+		width: 60px;
+		height: 60px;
 		flex-shrink: 0;
 		font-size: 32px;
 		color: #1e1e1e;
@@ -144,11 +142,11 @@
 		}
 	}
 
-	// Links container
+	// Links container - Matches features container styling
 	&__links {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0;
 		padding: 0 2rem 2rem;
 		background: var(--default-background);
 		border-bottom-left-radius: var(--border-radius);
@@ -160,20 +158,25 @@
 		}
 	}
 
-	// Links list
+	// Links list - Simple list styling
 	&__list {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 0;
 	}
 
-	// List item
+	// List item - Matches feature item styling
 	&__item {
 		margin: 0;
-		padding: 0;
+		padding: 0.75rem 0;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+		&:last-child {
+			border-bottom: none;
+		}
 
 		// Tease mode: hide items beyond teaseCount
 		&.is-teased {
@@ -181,78 +184,36 @@
 		}
 	}
 
-	// Link styling
+	// Link styling - inherit from site
 	&__link {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		color: var(--link-color);
+		color: inherit;
 		text-decoration: none;
-		font-size: 1rem;
-		line-height: 1.5;
-		transition: color 150ms ease;
+		display: block;
 
 		&:hover {
-			color: var(--link-hover-color);
 			text-decoration: underline;
-		}
-
-		// Arrow indicator
-		&::before {
-			content: '→';
-			font-weight: bold;
-			opacity: 0.5;
-			transition: opacity 150ms ease, transform 150ms ease;
-		}
-
-		&:hover::before {
-			opacity: 1;
-			transform: translateX(2px);
 		}
 	}
 
 	// "View all" button/link
 	&__view-all {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
+		display: inline-block;
 		margin-top: 1rem;
-		padding: 0.75rem 1.5rem;
-		background: var(--link-color);
-		color: white;
-		border: none;
-		border-radius: 6px;
-		font-size: 1rem;
-		font-weight: 600;
-		cursor: pointer;
+		padding-top: 0.75rem;
+		border-top: 1px solid rgba(0, 0, 0, 0.06);
+		color: inherit;
 		text-decoration: none;
-		transition: background-color 150ms ease;
+		font-weight: 500;
 		width: 100%;
-		text-align: center;
 
 		&:hover {
-			background: var(--link-hover-color);
-			color: white;
-		}
-
-		&:focus {
-			outline: 2px solid var(--link-color);
-			outline-offset: 2px;
-		}
-
-		// When it's a link (not button)
-		&[href] {
-			display: block;
+			text-decoration: underline;
 		}
 	}
 
 	// Accessibility: High contrast mode
 	@media (prefers-contrast: high) {
 		border: 2px solid currentColor;
-
-		&__link {
-			text-decoration: underline;
-		}
 	}
 
 	// Accessibility: Reduced motion
@@ -274,13 +235,6 @@
 		&__header {
 			gap: 1rem;
 		}
-
-		&__icon {
-			width: var(--icon-size);
-			height: var(--icon-size);
-			font-size: 24px;
-			padding: 10px;
-		}
 	}
 
 	// Stack on very small screens
@@ -288,11 +242,6 @@
 		&__header {
 			flex-direction: column;
 			gap: 0.75rem;
-			text-align: center;
-		}
-
-		&__heading-wrapper {
-			justify-content: center;
 		}
 
 		&__toggle {

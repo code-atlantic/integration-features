@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2025-01-18
+
+### Fixed
+- Category integrations block styling now matches integration-features-group exactly
+  - Removed arrow indicators from links
+  - Simplified link colors to inherit from site theme
+  - Adjusted spacing and borders to match existing patterns
+
 ## [0.4.0] - 2025-01-18
 
 ### Added
