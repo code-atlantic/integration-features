@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-01-18
+
+### Added
+- New `popup-maker/category-integrations` block for dynamic taxonomy display
+  - Server-side rendering via render.php for SEO and performance
+  - Category selector dropdown fetches from `integration_category` taxonomy
+  - Auto-pulls heading from category name, subheading from description
+  - Lists all integrations with links to their individual pages
+  - Three display modes: expanded, collapsed, and tease
+  - Configurable tease count with "View all" as link or inline expand
+  - Auto-excludes current integration on single integration pages
+  - Hardcoded icon mapping per category slug (dashicons)
+  - Full color customization (icon, header, heading, subheading)
+  - Heading override and tag selection (h2/h3)
+  - WordPress Interactivity API for frontend behavior
+  - Keyboard accessibility (Enter/Space to toggle collapsed mode)
+  - Responsive design with mobile breakpoints
+  - Print styles and accessibility media queries (high contrast, reduced motion)
+
 ## [0.3.0] - 2024-12-18
 
 ### Added
