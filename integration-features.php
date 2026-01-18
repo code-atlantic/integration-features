@@ -59,5 +59,18 @@ function create_block_integration_features_block_init() {
 
 	// Register the section-heading block type
 	register_block_type( __DIR__ . '/build/section-heading' );
+
+	// Register the view script module for category-integrations block
+	wp_register_script_module(
+		'popup-maker/category-integrations-view',
+		plugin_dir_url( __FILE__ ) . 'build/category-integrations/view.js',
+		[ '@wordpress/interactivity' ],
+		filemtime( __DIR__ . '/build/category-integrations/view.js' )
+	);
+
+	// Register the category-integrations block type
+	register_block_type( __DIR__ . '/build/category-integrations', [
+		'view_script_module' => 'popup-maker/category-integrations-view',
+	] );
 }
 add_action( 'init', 'create_block_integration_features_block_init' );

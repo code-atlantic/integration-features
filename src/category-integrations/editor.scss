@@ -1,0 +1,24 @@
+/**
+ * Category Integrations - Editor-specific Styles
+ */
+
+.pm-category-integrations-editor {
+	// Ensure ServerSideRender content displays properly
+	.components-server-side-render {
+		width: 100%;
+	}
+
+	// Style the placeholder when no category selected
+	.pm-category-integrations-placeholder {
+		padding: 2rem;
+		border: 2px dashed #ccc;
+		text-align: center;
+		border-radius: 8px;
+		background: #fafafa;
+
+		p {
+			margin: 0;
+			color: #666;
+		}
+	}
+}

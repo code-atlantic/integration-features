@@ -1,0 +1,324 @@
+/**
+ * Category Integrations - Frontend & Editor Styles
+ *
+ * Reuses patterns from integration-features-group for consistent styling.
+ */
+
+.pm-category-integrations {
+	--group-spacing: 2rem;
+	--icon-size: 60px;
+	--heading-color: #1e1e1e;
+	--subheading-color: #4a5568;
+	--default-background: #fafafa;
+	--hover-background: #eee;
+	--border-radius: 8px;
+	--link-color: #2563eb;
+	--link-hover-color: #1d4ed8;
+
+	position: relative;
+	margin: 0 0 var(--group-spacing);
+
+	// Header section - Icon | Heading/Subheading | Toggle
+	// Reuses structure from integration-features-group
+	&__header {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+		padding: 2rem;
+		border-radius: var(--border-radius);
+		background: var(--default-background, transparent);
+		position: relative;
+		transition: background-color 150ms ease;
+
+		// Hover effect
+		&:hover {
+			background: var(--hover-background);
+		}
+
+		// Clickable state when collapsible
+		&[role='button'] {
+			cursor: pointer;
+		}
+	}
+
+	// When block has links and is expanded, remove bottom border radius from header
+	&:not(.is-collapsed) &__header:has(~ .pm-category-integrations__links:not(.is-hidden)) {
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	// Group Icon - Reuses from integration-features-group
+	&__icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--icon-size);
+		height: var(--icon-size);
+		flex-shrink: 0;
+		font-size: 32px;
+		color: #1e1e1e;
+		border-radius: 8px;
+		padding: 12px;
+
+		&.dashicons {
+			font-family: 'dashicons';
+			text-decoration: inherit;
+			font-weight: 400;
+			font-style: normal;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			text-rendering: auto;
+			line-height: 1;
+			-webkit-user-select: none;
+			user-select: none;
+		}
+	}
+
+	// Text container (heading + subheading)
+	&__text {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		align-self: center;
+	}
+
+	// Heading wrapper (contains heading + count)
+	&__heading-wrapper {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	// Heading
+	&__heading {
+		margin: 0;
+		color: var(--heading-color);
+	}
+
+	// Integration count badge
+	&__count {
+		font-size: 0.85em;
+		font-weight: 500;
+		opacity: 0.7;
+		white-space: nowrap;
+	}
+
+	// Subheading
+	&__subheading {
+		margin: 0;
+		color: var(--subheading-color);
+	}
+
+	// Collapse toggle indicator
+	&__toggle {
+		color: var(--subheading-color);
+		flex-shrink: 0;
+		font-size: 2em;
+		margin-left: auto;
+		transition: transform 0.2s ease;
+		width: 1em;
+		height: 1em;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&::before {
+			display: inline-block;
+			width: 1em;
+			height: 1em;
+			text-align: center;
+			line-height: 1.18em;
+			transform-origin: center center;
+		}
+
+		// Chevron rotation states
+		&.is-collapsed {
+			transform: rotate(0deg);
+		}
+
+		&.is-expanded {
+			transform: rotate(180deg);
+		}
+	}
+
+	// Links container
+	&__links {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding: 0 2rem 2rem;
+		background: var(--default-background);
+		border-bottom-left-radius: var(--border-radius);
+		border-bottom-right-radius: var(--border-radius);
+
+		// Hidden state
+		&.is-hidden {
+			display: none !important;
+		}
+	}
+
+	// Links list
+	&__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	// List item
+	&__item {
+		margin: 0;
+		padding: 0;
+
+		// Tease mode: hide items beyond teaseCount
+		&.is-teased {
+			display: none;
+		}
+	}
+
+	// Link styling
+	&__link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--link-color);
+		text-decoration: none;
+		font-size: 1rem;
+		line-height: 1.5;
+		transition: color 150ms ease;
+
+		&:hover {
+			color: var(--link-hover-color);
+			text-decoration: underline;
+		}
+
+		// Arrow indicator
+		&::before {
+			content: '→';
+			font-weight: bold;
+			opacity: 0.5;
+			transition: opacity 150ms ease, transform 150ms ease;
+		}
+
+		&:hover::before {
+			opacity: 1;
+			transform: translateX(2px);
+		}
+	}
+
+	// "View all" button/link
+	&__view-all {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 1rem;
+		padding: 0.75rem 1.5rem;
+		background: var(--link-color);
+		color: white;
+		border: none;
+		border-radius: 6px;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		text-decoration: none;
+		transition: background-color 150ms ease;
+		width: 100%;
+		text-align: center;
+
+		&:hover {
+			background: var(--link-hover-color);
+			color: white;
+		}
+
+		&:focus {
+			outline: 2px solid var(--link-color);
+			outline-offset: 2px;
+		}
+
+		// When it's a link (not button)
+		&[href] {
+			display: block;
+		}
+	}
+
+	// Accessibility: High contrast mode
+	@media (prefers-contrast: high) {
+		border: 2px solid currentColor;
+
+		&__link {
+			text-decoration: underline;
+		}
+	}
+
+	// Accessibility: Reduced motion
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+
+	// Responsive
+	@media (max-width: 768px) {
+		--group-spacing: 1.5rem;
+		--icon-size: 48px;
+
+		&__header {
+			gap: 1rem;
+		}
+
+		&__icon {
+			width: var(--icon-size);
+			height: var(--icon-size);
+			font-size: 24px;
+			padding: 10px;
+		}
+	}
+
+	// Stack on very small screens
+	@media (max-width: 480px) {
+		&__header {
+			flex-direction: column;
+			gap: 0.75rem;
+			text-align: center;
+		}
+
+		&__heading-wrapper {
+			justify-content: center;
+		}
+
+		&__toggle {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+		}
+	}
+
+	// Print styles
+	@media print {
+		background: transparent;
+		border: 1px solid #e5e7eb;
+		page-break-inside: avoid;
+
+		// Show all items when printing
+		&__item.is-teased {
+			display: block !important;
+		}
+
+		&__links.is-hidden {
+			display: flex !important;
+		}
+
+		&__view-all {
+			display: none;
+		}
+	}
+}

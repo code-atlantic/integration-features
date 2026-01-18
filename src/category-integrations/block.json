@@ -1,0 +1,115 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "popup-maker/category-integrations",
+	"version": "1.0.0",
+	"title": "Category Integrations",
+	"category": "layout",
+	"icon": "admin-links",
+	"description": "Display integrations from a category with links to each integration page.",
+	"keywords": [
+		"integration",
+		"category",
+		"links",
+		"taxonomy",
+		"related"
+	],
+	"textdomain": "popup-maker",
+	"attributes": {
+		"categoryId": {
+			"type": "number",
+			"default": 0
+		},
+		"categorySlug": {
+			"type": "string",
+			"default": ""
+		},
+		"displayMode": {
+			"type": "string",
+			"enum": ["expanded", "collapsed", "tease"],
+			"default": "expanded"
+		},
+		"teaseCount": {
+			"type": "number",
+			"default": 3
+		},
+		"groupIcon": {
+			"type": "string",
+			"default": ""
+		},
+		"groupIconColor": {
+			"type": "string",
+			"default": "#1dbe61"
+		},
+		"groupIconBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"headingOverride": {
+			"type": "string",
+			"default": ""
+		},
+		"headingTag": {
+			"type": "string",
+			"enum": ["h2", "h3"],
+			"default": "h2"
+		},
+		"subheadingOverride": {
+			"type": "string",
+			"default": ""
+		},
+		"headerBackgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"headingColor": {
+			"type": "string",
+			"default": ""
+		},
+		"subheadingColor": {
+			"type": "string",
+			"default": ""
+		},
+		"autoExcludeCurrent": {
+			"type": "boolean",
+			"default": true
+		},
+		"teaseExpandMode": {
+			"type": "string",
+			"enum": ["inline", "link"],
+			"default": "link"
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide", "full"],
+		"className": true,
+		"customClassName": true,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"interactivity": true,
+		"color": {
+			"background": true,
+			"text": true,
+			"link": false
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": ["wp-dashicons", "file:./index.css"],
+	"style": "file:./style-index.css",
+	"viewScriptModule": "file:./view.js",
+	"render": "file:./render.php"
+}
