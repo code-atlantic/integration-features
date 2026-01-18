@@ -95,7 +95,8 @@ if ( ! $integrations->have_posts() ) {
 $total_count = $integrations->post_count;
 
 // Determine wrapper classes.
-$wrapper_classes = array( 'pm-category-integrations' );
+// Include pm-integration-features-group for theme compatibility (site styles target this class).
+$wrapper_classes = array( 'pm-category-integrations', 'pm-integration-features-group', 'has-features' );
 if ( 'collapsed' === $display_mode ) {
 	$wrapper_classes[] = 'is-collapsed';
 }
@@ -157,7 +158,7 @@ $icon_bg = ! empty( $group_icon_bg_color ) ? $group_icon_bg_color : $group_icon_
 
 	<!-- Header: Icon + Heading + Subheading -->
 	<div
-		class="pm-category-integrations__header"
+		class="pm-category-integrations__header pm-integration-features-group__header"
 		style="<?php echo esc_attr( $header_styles ); ?>"
 		<?php if ( 'collapsed' === $display_mode ) : ?>
 			role="button"
@@ -223,7 +224,7 @@ $icon_bg = ! empty( $group_icon_bg_color ) ? $group_icon_bg_color : $group_icon_
 
 	<!-- Integration Features List (matches integration-features-group structure) -->
 	<div
-		class="pm-category-integrations__features <?php echo 'collapsed' === $display_mode ? 'is-hidden' : ''; ?>"
+		class="pm-category-integrations__features pm-integration-features-group__features <?php echo 'collapsed' === $display_mode ? 'is-hidden' : ''; ?>"
 		style="<?php echo esc_attr( $padding_styles ); ?>"
 	>
 		<?php
