@@ -20,7 +20,8 @@
   },
   "scripts": {
     "install-strauss": [
-      "test -f strauss.phar || curl -o strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.22.4/strauss.phar"
+      "(test -f strauss.phar && echo '2141bf2cf5179bfceabf14dd647920abdfc7c3f1dfc702534d87e5994e5a3b48  strauss.phar' | shasum -a 256 -c - >/dev/null 2>&1) || curl -o strauss.phar -L https://github.com/BrianHenryIE/strauss/releases/download/0.29.1/strauss.phar",
+      "echo '2141bf2cf5179bfceabf14dd647920abdfc7c3f1dfc702534d87e5994e5a3b48  strauss.phar' | shasum -a 256 -c -"
     ],
     "clean-vendor-prefix-folder": [
       "rm -rf vendor-prefixed/**/*"
