@@ -3,6 +3,7 @@
 # Dependencies
 node_modules/
 vendor/
+strauss.phar
 
 # Build output
 build/

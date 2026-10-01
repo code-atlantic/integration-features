@@ -1,9 +1,21 @@
 name: Release
 
+run-name: Release (${{ github.event_name == 'push' && github.ref_name || format('dry run {0}', inputs.version) }})
+
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+*'
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to package in a release-free dry run (with or without a v prefix).
+        required: true
+        default: '0.4.2'
+        type: string
 
 permissions:
   contents: write
@@ -34,7 +46,25 @@ jobs:
 
       - name: Get version from tag
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        env:
+          DISPATCH_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          git_tag="$GITHUB_REF_NAME"
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+            git_tag="$DISPATCH_VERSION"
+          fi
+          version="${git_tag#v}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::Version/tag must be N.N.N or vN.N.N, optionally with a prerelease suffix."
+            exit 1
+          fi
+          header_version="$(awk -F: '/^[[:space:]]*\*?[[:space:]]*Version:/ { gsub(/[[:space:]]/, "", $2); print $2; exit }' integration-features.php)"
+          test "$header_version" = "$version"
+          {
+            echo "VERSION=$version"
+            echo "GIT_TAG=$git_tag"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create plugin zip
         run: |
@@ -55,8 +85,30 @@ jobs:
           zip -r ../integration-features-${{ steps.get_version.outputs.VERSION }}.zip integration-features
           cd ..
 
+      - name: Smoke-test and inspect the shipped archive
+        run: |
+          set -euo pipefail
+          archive="integration-features-${{ steps.get_version.outputs.VERSION }}.zip"
+          smoke="$(mktemp -d)"
+          trap 'rm -rf "$smoke"' EXIT
+          unzip -q "$archive" -d "$smoke"
+          test -f "$smoke/integration-features/integration-features.php"
+          while IFS= read -r -d '' file; do php -l "$file" >/dev/null; done < <(find "$smoke/integration-features" -name '*.php' -print0)
+          if unzip -Z1 "$archive" | grep -E '(^|/)(node_modules|tests|\.github)/|\.map$|\.DS_Store$'; then
+            echo '::error::Release archive contains development-only content.'
+            exit 1
+          fi
+
+      - name: Upload release-free proof artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: release-zip
+          path: integration-features-${{ steps.get_version.outputs.VERSION }}.zip
+          retention-days: 5
+
       - name: Extract changelog for this version
         id: changelog
+        if: github.event_name == 'push'
         run: |
           # Extract changelog section for this version
           VERSION="${{ steps.get_version.outputs.VERSION }}"
@@ -71,6 +123,7 @@ jobs:
           echo "$CHANGELOG" > changelog_extract.txt
 
       - name: Create GitHub Release
+        if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
           files: integration-features-${{ steps.get_version.outputs.VERSION }}.zip
